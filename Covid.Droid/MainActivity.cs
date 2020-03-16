@@ -3,21 +3,32 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using Covid.Droid.Fragments;
+using Covid.Droid.Model;
 using Covid.Lib;
 using Covid.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Covid.Droid
 {
-    [Activity(Label =  "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
-        TextView textMessage;
         ApiConsumer Api;
+        GlobalDataFragment GlobalFragment;
+        RecyclerView mRecyclerView;
+        RecyclerView.LayoutManager mLayoutManager;
+        CovidReportAdapter CountriesAdapter;
+        TextView txtTitle;
+        LinearLayout recyclerLayout;
+        CountryDetailsFragment DetailsFragment;
+
 
         protected override async void OnCreate(Bundle savedInstanceState)
         {
@@ -27,16 +38,31 @@ namespace Covid.Droid
 
             InitControls();
             InitApiConsumer();
-            //await Api.GetGlobal();
+            await Api.GetGlobal();
             await Api.GetDataByCountries();
         }
 
         private void InitControls()
         {
-            textMessage = FindViewById<TextView>(Resource.Id.message);
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
+            mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.SetLayoutManager(mLayoutManager);
             navigation.SetOnNavigationItemSelectedListener(this);
+            GlobalFragment = (GlobalDataFragment)SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
+            DetailsFragment = (CountryDetailsFragment)SupportFragmentManager.FindFragmentById(Resource.Id.detailsFragment);
+            SupportFragmentManager.BeginTransaction().Hide(DetailsFragment).Commit();
+            txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
+            recyclerLayout = FindViewById<LinearLayout>(Resource.Id.recyclerLayout);
         }
+
+        private void CountriesAdapter_ItemClick(object sender, CovidCountryReport Report)
+        {
+            DetailsFragment.Update(Report);
+            var fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(DetailsFragment).Commit();
+        }
+
         private void InitApiConsumer()
         {
             Api = new ApiConsumer();
@@ -45,15 +71,24 @@ namespace Covid.Droid
             Api.AddOnFailureListener(ApiListener);
         }
 
+        //@ToDo: find a better way to do this!
+        int CachedLevel;
         private void ApiListener_Success(object sender, object CovidResult)
         {
+            if (CachedLevel >= 2)
+                return; 
             if (CovidResult is CovidReport)
             {
-                CovidResult = CovidResult as CovidReport;
+                GlobalFragment.Update(CovidResult as CovidReport);
+                CachedLevel++;
             }
             else
             {
-                CovidResult = (IEnumerable<CovidCountryReport>)CovidResult;
+                var AsList = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
+                CountriesAdapter = new CovidReportAdapter(AsList);
+                CountriesAdapter.ItemClick += CountriesAdapter_ItemClick;
+                mRecyclerView.SetAdapter(CountriesAdapter);
+                CachedLevel++;
             }
         }
 
@@ -71,18 +106,40 @@ namespace Covid.Droid
         {
             switch (item.ItemId)
             {
-                case Resource.Id.navigation_home:
-                    textMessage.SetText(Resource.String.title_home);
+                case Resource.Id.navigation_global:
+                    HideByCountries();
+                    ShowGlobal();
                     return true;
-                case Resource.Id.navigation_dashboard:
-                    textMessage.SetText(Resource.String.title_dashboard);
+                case Resource.Id.navigation_bycountries:
+                    HideGlobal();
+                    ShowByCountries();
                     return true;
-                case Resource.Id.navigation_notifications:
-                    textMessage.SetText(Resource.String.title_notifications);
+                case Resource.Id.navigation_about:
                     return true;
             }
             return false;
         }
+        void HideGlobal()
+        {
+            var fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Hide(GlobalFragment).Commit();
+        }
+        void ShowGlobal()
+        {
+            txtTitle.Text = "Global";
+            var fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(GlobalFragment).Commit();
+        }
+        void HideByCountries()
+        {
+            recyclerLayout.Visibility = ViewStates.Invisible;
+        }
+        void ShowByCountries()
+        {
+            txtTitle.Text = "Países";
+            recyclerLayout.Visibility = ViewStates.Visible;
+        }
+
     }
 }
 
