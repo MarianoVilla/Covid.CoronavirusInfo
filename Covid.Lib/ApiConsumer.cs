@@ -48,6 +48,8 @@ namespace Covid.Lib
                 {
                     using HttpContent content = Res.Content;
                     var Report = await content.ReadAsAsync<IEnumerable<CovidCountryReport>>();
+                    Report.LoadRegionalFriendlyNames();
+                    Report.LoadCountryCodes();
                     NotifySuccess(Report);
                 }
                 else

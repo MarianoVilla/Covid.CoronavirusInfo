@@ -20,11 +20,13 @@ namespace Covid.Droid.Activities
     public class SplashActivity : Activity
     {
         ApiConsumer Api;
+        ImageView imgSplash;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            //RandomAdvice();
+            SetContentView(Resource.Drawable.splash);
+            imgSplash = FindViewById<ImageView>(Resource.Id.imgSplash);
+            RandomAdvice();
         }
         void RandomAdvice()
         {
@@ -32,7 +34,7 @@ namespace Covid.Droid.Activities
             int[] Splashes = { Resource.Drawable.avoid_crowds, Resource.Drawable.wash_hands, Resource.Drawable.wash_hand_soap };
             Random Rnd = new Random();
             int RandomSplashId = Splashes[Rnd.Next(Splashes.Count())];
-            Window.SetBackgroundDrawableResource(RandomSplashId);
+            imgSplash.SetImageResource(RandomSplashId);
         }
         protected override async void OnResume()
         {

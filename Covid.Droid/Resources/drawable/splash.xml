@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item>
-    <color android:color="@color/splashBackground"/>
-  </item>
-  <item>
-    <bitmap
-        android:src="@drawable/coronavirus"
-        android:tileMode="disabled"
-        android:gravity="center"/>
-  </item>
-</layer-list>
+<RelativeLayout
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+  <ImageView
+      android:id="@+id/imgSplash"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:src="@drawable/coronavirus"/>
+</RelativeLayout>

@@ -16,10 +16,10 @@
         android:icon="@drawable/exclamation"
         android:title="@string/title_info" />
 
-    <item
+    <!--<item
         android:id="@+id/navigation_about"
         android:icon="@drawable/questionmark"
-        android:title="@string/title_about" />
+        android:title="@string/title_about" />-->
 
 
 

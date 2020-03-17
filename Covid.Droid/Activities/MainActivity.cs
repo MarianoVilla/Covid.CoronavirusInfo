@@ -39,7 +39,7 @@ namespace Covid.Droid.Activities
         List<CovidCountryReport> CountriesReport;
 
 
-        protected override async void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -73,6 +73,7 @@ namespace Covid.Droid.Activities
             GlobalFragment = (GlobalDataFragment)SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
             DetailsFragment = (CountryDetailsFragment)SupportFragmentManager.FindFragmentById(Resource.Id.detailsFragment);
             InfoFrag = (InfoFragment)SupportFragmentManager.FindFragmentById(Resource.Id.infoFragment);
+            HideInfo();
             SupportFragmentManager.BeginTransaction().Hide(DetailsFragment).Commit();
             txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
             recyclerLayout = FindViewById<LinearLayout>(Resource.Id.recyclerLayout);
@@ -87,6 +88,7 @@ namespace Covid.Droid.Activities
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(DetailsFragment).Commit();
         }
 
+        #region ApiConsumer. Was moved to the SplashActivity.
         private void InitApiConsumer()
         {
             Api = new ApiConsumer();
@@ -119,6 +121,7 @@ namespace Covid.Droid.Activities
         private void ApiListener_Failure(object sender, Exception e)
         {
         }
+        #endregion
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -139,11 +142,18 @@ namespace Covid.Droid.Activities
                 case Resource.Id.navigation_info:
                     SwitchToInfo();
                     return true;
-                case Resource.Id.navigation_about:
-                    return true;
+                //case Resource.Id.navigation_about:
+                //    SwitchToAbout();
+                //    return true;
             }
             return false;
         }
+
+        private void SwitchToAbout()
+        {
+            throw new NotImplementedException();
+        }
+
         //Change title. Wrap width. Wrap height (it's going under the menu).
         void SwitchToInfo()
         {
@@ -162,6 +172,8 @@ namespace Covid.Droid.Activities
         {
             if (InfoFrag.IsVisible)
                 return;
+            txtTitle.Text = "Info";
+            SetTitleDrawable(Resource.Drawable.exclamation);
             var fm = this.SupportFragmentManager;
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(InfoFrag).Commit();
         }

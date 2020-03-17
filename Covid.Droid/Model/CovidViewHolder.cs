@@ -30,7 +30,7 @@ namespace Covid.Droid.Model
         }
         public void Update(CovidCountryReport Report)
         {
-            txtCountryName.Text = Report.Country;
+            txtCountryName.Text = Report.RegionalFriendlyName ?? Report.Country;
             txtCases.Text = Report.Cases;
         }
     }

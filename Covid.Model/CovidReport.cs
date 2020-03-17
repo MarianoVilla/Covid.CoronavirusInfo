@@ -9,5 +9,6 @@ namespace Covid.Model
         public string Cases { get; set; }
         public string Deaths { get; set; }
         public string Recovered { get; set; }
+        public string Updated { get; set; }
     }
 }
