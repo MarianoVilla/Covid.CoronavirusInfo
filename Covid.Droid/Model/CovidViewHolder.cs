@@ -5,6 +5,8 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
@@ -28,9 +30,10 @@ namespace Covid.Droid.Model
             // was clicked (by layout position) to the listener:
             itemView.Click += (sender, e) => listener(base.LayoutPosition);
         }
-        public void Update(CovidCountryReport Report)
+        public void Update(CovidCountryReport Report, Drawable CountryNameDrawable)
         {
             txtCountryName.Text = Report.RegionalFriendlyName ?? Report.Country;
+            txtCountryName.SetCompoundDrawablesWithIntrinsicBounds(CountryNameDrawable, null, null, null);
             txtCases.Text = Report.Cases;
         }
     }

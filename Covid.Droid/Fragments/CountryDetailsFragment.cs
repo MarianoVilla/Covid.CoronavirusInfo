@@ -34,7 +34,6 @@ namespace Covid.Droid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            // Use this to return your custom view for this Fragment
             RootView = inflater.Inflate(Resource.Layout.country_details_fragment, container, false);
             InitControls();
             return RootView;
@@ -52,8 +51,6 @@ namespace Covid.Droid.Fragments
             txtTodayDeaths = FindViewById<TextView>(Resource.Id.txtTodayDeaths);
             imgCloseDetails = FindViewById<ImageView>(Resource.Id.imgCloseDetails);
             imgCloseDetails.Click += ImgCloseDetails_Click;
-            //@ToDo: get country's flag!
-            //txtCountryName.SetCompoundDrawables()
 
         }
 

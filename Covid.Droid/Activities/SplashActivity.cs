@@ -88,7 +88,6 @@ namespace Covid.Droid.Activities
         }
         private void ApiListener_Failure(object sender, Exception e)
         {
-            //@ToDo: do something with failure.
             GetFromCache();
             Toast.MakeText(this, "Hubo un error al actualizar. Usamos la info de la última actualización.", ToastLength.Long).Show();
             GoToMain();

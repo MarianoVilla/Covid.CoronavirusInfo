@@ -73,6 +73,7 @@
     <Compile Include="Fragments\InfoFragment.cs" />
     <Compile Include="Helpers\AnimationHandler.cs" />
     <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Model\CachedState.cs" />
     <Compile Include="Model\CovidReportAdapter.cs" />
     <Compile Include="Model\CovidViewHolder.cs" />
