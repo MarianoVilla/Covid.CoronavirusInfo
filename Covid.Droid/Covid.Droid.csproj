@@ -69,6 +69,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Fragments\CountryDetailsFragment.cs" />
     <Compile Include="Fragments\GlobalDataFragment.cs" />
+    <Compile Include="Fragments\InfoFragment.cs" />
     <Compile Include="Helpers\AnimationHandler.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Model\CachedState.cs" />
@@ -206,6 +207,17 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\wash_hand_soap.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\questionmark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\exclamation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\info_fragment.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

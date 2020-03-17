@@ -32,6 +32,7 @@ namespace Covid.Droid.Activities
         TextView txtTitle;
         LinearLayout recyclerLayout;
         CountryDetailsFragment DetailsFragment;
+        InfoFragment InfoFrag;
         ProgressBar progressBar;
         AnimationHandler Animator;
         CovidReport GlobalReport;
@@ -71,6 +72,7 @@ namespace Covid.Droid.Activities
             navigation.SetOnNavigationItemSelectedListener(this);
             GlobalFragment = (GlobalDataFragment)SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
             DetailsFragment = (CountryDetailsFragment)SupportFragmentManager.FindFragmentById(Resource.Id.detailsFragment);
+            InfoFrag = (InfoFragment)SupportFragmentManager.FindFragmentById(Resource.Id.infoFragment);
             SupportFragmentManager.BeginTransaction().Hide(DetailsFragment).Commit();
             txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
             recyclerLayout = FindViewById<LinearLayout>(Resource.Id.recyclerLayout);
@@ -129,38 +131,69 @@ namespace Covid.Droid.Activities
             switch (item.ItemId)
             {
                 case Resource.Id.navigation_global:
-                    HideByCountries();
-                    ShowGlobal();
+                    SwitchToGlobal();
                     return true;
                 case Resource.Id.navigation_bycountries:
                     SwitchToCountries();
+                    return true;
+                case Resource.Id.navigation_info:
+                    SwitchToInfo();
                     return true;
                 case Resource.Id.navigation_about:
                     return true;
             }
             return false;
         }
+        //Change title. Wrap width. Wrap height (it's going under the menu).
+        void SwitchToInfo()
+        {
+            HideGlobal();
+            HideByCountries();
+            ShowInfo();
+        }
+        void HideInfo()
+        {
+            if (InfoFrag.IsHidden)
+                return;
+            var fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Hide(InfoFrag).Commit();
+        }
+        void ShowInfo()
+        {
+            if (InfoFrag.IsVisible)
+                return;
+            var fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(InfoFrag).Commit();
+        }
         void SwitchToCountries()
         {
+            HideInfo();
             HideGlobal();
             ShowByCountries();
         }
         void HideGlobal()
         {
+            if (GlobalFragment.IsHidden)
+                return;
             var fm = this.SupportFragmentManager;
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Hide(GlobalFragment).Commit();
         }
+        void SwitchToGlobal()
+        {
+            HideInfo();
+            HideByCountries();
+            ShowGlobal();
+        }
         void ShowGlobal()
         {
+            if (GlobalFragment.IsVisible)
+                return;
             txtTitle.Text = "Global";
             SetTitleDrawable(Resource.Drawable.world_earth);
             var fm = this.SupportFragmentManager;
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(GlobalFragment).Commit();
         }
-        void HideByCountries()
-        {
-            recyclerLayout.Visibility = ViewStates.Invisible;
-        }
+        void HideByCountries() => recyclerLayout.Visibility = ViewStates.Invisible;
         void ShowByCountries()
         {
             txtTitle.Text = "Países";
