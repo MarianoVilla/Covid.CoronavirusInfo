@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:textSize="30dp"
                 android:drawableLeft="@drawable/virus_coronavirus_virus_covid_covid_icon_134860"
-                android:text="Bla"/>
+                android:text="@string/title_infected"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
                 android:layout_gravity="center"
                 android:textSize="40dp"
                 android:id="@+id/txtGlobalCases"
-                android:text="1000"/>
+                android:text="0"/>
 
         </LinearLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_gravity="center"
                 android:textSize="30dp"
                 android:drawableLeft="@drawable/rip_tomb_cemetery_icon_134861"
-                android:text="Bla"/>
+                android:text="@string/title_deaths"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                 android:layout_gravity="center"
                 android:textSize="40dp"
                 android:id="@+id/txtGlobalDeaths"
-                android:text="1000"/>
+                android:text="0"/>
 
         </LinearLayout>
 
@@ -94,7 +94,7 @@
                 android:layout_gravity="center"
                 android:textSize="30dp"
                 android:drawableLeft="@drawable/thy"
-                android:text="Bla"/>
+                android:text="@string/title_recovered"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
                 android:layout_gravity="center"
                 android:textSize="40dp"
                 android:id="@+id/txtGlobalRecovered"
-                android:text="1000"/>
+                android:text="0"/>
 
         </LinearLayout>
 

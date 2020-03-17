@@ -7,8 +7,7 @@ namespace Covid.Model
 {
     public class Const
     {
-        public static readonly string BaseEndpoint = @"https://coronavirus-19-api.herokuapp.com/";
-        public static readonly Uri RestUri = new Uri(BaseEndpoint);
+        public static readonly Uri[] Endpoints = { new Uri(@"https://coronavirus-19-api.herokuapp.com/"), new Uri(@"https://corona.lmao.ninja/") };
         public static HttpClient GlobalHttpClient;
     }
 }

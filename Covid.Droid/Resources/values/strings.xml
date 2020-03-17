@@ -3,4 +3,7 @@
     <string name="title_home">Mundial</string>
     <string name="title_dashboard">Países</string>
     <string name="title_notifications">Acerca de</string>
+    <string name="title_infected">Casos</string>
+  <string name="title_deaths">Muertos</string>
+  <string name="title_recovered">Recuperados</string>
 </resources>

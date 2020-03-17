@@ -25,12 +25,11 @@ namespace Covid.Droid.Fragments
         TextView txtActiveCases;
         TextView txtRecoveredCases;
         TextView txtDeathCases;
+        ImageView imgCloseDetails;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
-            // Create your fragment here
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -51,8 +50,18 @@ namespace Covid.Droid.Fragments
             txtRecoveredCases = FindViewById<TextView>(Resource.Id.txtRecoveredCases);
             txtDeathCases = FindViewById<TextView>(Resource.Id.txtDeathCases);
             txtTodayDeaths = FindViewById<TextView>(Resource.Id.txtTodayDeaths);
+            imgCloseDetails = FindViewById<ImageView>(Resource.Id.imgCloseDetails);
+            imgCloseDetails.Click += ImgCloseDetails_Click;
+            //@ToDo: get country's flag!
+            //txtCountryName.SetCompoundDrawables()
 
         }
+
+        private void ImgCloseDetails_Click(object sender, EventArgs e)
+        {
+            FragmentManager.BeginTransaction().Hide(this).Commit();
+        }
+
         T FindViewById<T>(int ResourceId) where T: View => RootView.FindViewById<T>(ResourceId);
 
         public void Update(CovidCountryReport Report)

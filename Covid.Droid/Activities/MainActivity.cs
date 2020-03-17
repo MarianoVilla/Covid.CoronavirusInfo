@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
@@ -7,17 +8,20 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using Covid.Droid.Fragments;
+using Covid.Droid.Helpers;
 using Covid.Droid.Model;
 using Covid.Lib;
 using Covid.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace Covid.Droid
+namespace Covid.Droid.Activities
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
         ApiConsumer Api;
@@ -28,6 +32,10 @@ namespace Covid.Droid
         TextView txtTitle;
         LinearLayout recyclerLayout;
         CountryDetailsFragment DetailsFragment;
+        ProgressBar progressBar;
+        AnimationHandler Animator;
+        CovidReport GlobalReport;
+        List<CovidCountryReport> CountriesReport;
 
 
         protected override async void OnCreate(Bundle savedInstanceState)
@@ -37,9 +45,21 @@ namespace Covid.Droid
             SetContentView(Resource.Layout.activity_main);
 
             InitControls();
-            InitApiConsumer();
-            await Api.GetGlobal();
-            await Api.GetDataByCountries();
+            GetBoundleData();
+            LoadBoundleData();
+        }
+        void GetBoundleData()
+        {
+            GlobalReport = JsonConvert.DeserializeObject<CovidReport>(Intent.GetStringExtra(nameof(GlobalReport)));
+            CountriesReport = JsonConvert.DeserializeObject<List<CovidCountryReport>>(Intent.GetStringExtra(nameof(CountriesReport)));
+        }
+
+        private void LoadBoundleData()
+        {
+            GlobalFragment.Update(GlobalReport);
+            CountriesAdapter = new CovidReportAdapter(CountriesReport);
+            CountriesAdapter.ItemClick += CountriesAdapter_ItemClick;
+            mRecyclerView.SetAdapter(CountriesAdapter);
         }
 
         private void InitControls()
@@ -54,6 +74,8 @@ namespace Covid.Droid
             SupportFragmentManager.BeginTransaction().Hide(DetailsFragment).Commit();
             txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
             recyclerLayout = FindViewById<LinearLayout>(Resource.Id.recyclerLayout);
+            progressBar = FindViewById<ProgressBar>(Resource.Id.loadingProgress);
+            Animator = new AnimationHandler(progressBar);
         }
 
         private void CountriesAdapter_ItemClick(object sender, CovidCountryReport Report)
@@ -76,7 +98,7 @@ namespace Covid.Droid
         private void ApiListener_Success(object sender, object CovidResult)
         {
             if (CachedLevel >= 2)
-                return; 
+                return;
             if (CovidResult is CovidReport)
             {
                 GlobalFragment.Update(CovidResult as CovidReport);
@@ -111,13 +133,17 @@ namespace Covid.Droid
                     ShowGlobal();
                     return true;
                 case Resource.Id.navigation_bycountries:
-                    HideGlobal();
-                    ShowByCountries();
+                    SwitchToCountries();
                     return true;
                 case Resource.Id.navigation_about:
                     return true;
             }
             return false;
+        }
+        void SwitchToCountries()
+        {
+            HideGlobal();
+            ShowByCountries();
         }
         void HideGlobal()
         {
@@ -127,6 +153,7 @@ namespace Covid.Droid
         void ShowGlobal()
         {
             txtTitle.Text = "Global";
+            SetTitleDrawable(Resource.Drawable.world_earth);
             var fm = this.SupportFragmentManager;
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(GlobalFragment).Commit();
         }
@@ -137,8 +164,15 @@ namespace Covid.Droid
         void ShowByCountries()
         {
             txtTitle.Text = "Países";
+            SetTitleDrawable(Resource.Drawable.country_icon);
             recyclerLayout.Visibility = ViewStates.Visible;
         }
+        void SetTitleDrawable(int TheDrawableId)
+        {
+            var draw = ApplicationContext.GetDrawable(TheDrawableId);
+            txtTitle.SetCompoundDrawablesWithIntrinsicBounds(null, draw, null, null);
+        }
+
 
     }
 }

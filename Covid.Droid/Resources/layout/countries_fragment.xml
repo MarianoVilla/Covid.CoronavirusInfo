@@ -3,6 +3,20 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="44.5dp"
+            android:id="@+id/txtSearchCountry"
+            android:layout_gravity="top|center"
+            android:background="@drawable/editextrounded"
+            android:textAlignment="center"
+            android:hint="Buscar"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:layout_marginTop="1dp"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:scrollbars="vertical"

@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Covid.Model;
+using Covid.Lib;
 
 namespace Covid.Droid
 {
@@ -31,7 +32,7 @@ namespace Covid.Droid
         {
             var Cookies = new CookieContainer();
             var Handler = new HttpClientHandler() { CookieContainer = Cookies };
-            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.RestUri };
+            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.Endpoints.FirstOrDefault(x => x.IsWorking("All")) };
             Const.GlobalHttpClient.DefaultRequestHeaders.Add("accept", "*/*");
         }
     }
