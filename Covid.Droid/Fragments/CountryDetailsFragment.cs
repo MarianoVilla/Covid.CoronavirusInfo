@@ -74,64 +74,9 @@ namespace Covid.Droid.Fragments
             txtRecoveredCases.Text = Report.Recovered;
             txtDeathCases.Text = Report.Deaths;
             txtTodayDeaths.Text = Report.TodayDeaths.ToString();
-            SetDrawables(Report.CountryCode);
+            ResolveFlagDrawable(Report.CountryCode);
 
         }
-
-        private void SetDrawables(string CountryCode)
-        {
-            ResolveFlagDrawable(CountryCode);
-            SetCountDrawable();
-            SetTodayCasesDrawable();
-            SetCriticalCasesDrawable();
-            SetActiveCasesDrawable();
-            SetRecoveredCasesDrawable();
-            SetDeathCasesDrawable();
-            SetTodayDeathsDrawable();
-        }
-
-        private void SetTodayDeathsDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.rip_today);
-            txtTodayDeaths.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
-        private void SetDeathCasesDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.rip);
-            txtDeathCases.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
-        private void SetRecoveredCasesDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.plus);
-            txtActiveCases.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
-        private void SetActiveCasesDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.play);
-            txtActiveCases.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
-        private void SetCriticalCasesDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.exclamation_2);
-            txtCriticalCases.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
-        private void SetTodayCasesDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.exclamation);
-            txtTodayCases.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
-        void SetCountDrawable()
-        {
-            var draw = Context.GetDrawable(Resource.Drawable.number);
-            txtCountryCount.SetCompoundDrawablesWithIntrinsicBounds(draw, null, null, null);
-        }
-
 
         void ResolveFlagDrawable(string CountryCode)
         {

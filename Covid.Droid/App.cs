@@ -1,20 +1,15 @@
-﻿using System;
+﻿using Android.App;
+using Android.Runtime;
+using Covid.Lib;
+using Covid.Model;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Covid.Model;
-using Covid.Lib;
-using System.IO;
-using Newtonsoft.Json;
+using NetDebug = System.Diagnostics.Debug;
 
 namespace Covid.Droid
 {

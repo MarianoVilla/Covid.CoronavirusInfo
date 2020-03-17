@@ -24,7 +24,6 @@ namespace Covid.Droid.Activities
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener
     {
-        ApiConsumer Api;
         GlobalDataFragment GlobalFragment;
         RecyclerView mRecyclerView;
         RecyclerView.LayoutManager mLayoutManager;
@@ -88,41 +87,6 @@ namespace Covid.Droid.Activities
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(DetailsFragment).Commit();
         }
 
-        #region ApiConsumer. Was moved to the SplashActivity.
-        private void InitApiConsumer()
-        {
-            Api = new ApiConsumer();
-            var ApiListener = new RestCompletionListener(ApiListener_Success, ApiListener_Failure);
-            Api.AddOnSuccessListener(ApiListener);
-            Api.AddOnFailureListener(ApiListener);
-        }
-
-        //@ToDo: find a better way to do this!
-        int CachedLevel;
-        private void ApiListener_Success(object sender, object CovidResult)
-        {
-            if (CachedLevel >= 2)
-                return;
-            if (CovidResult is CovidReport)
-            {
-                GlobalFragment.Update(CovidResult as CovidReport);
-                CachedLevel++;
-            }
-            else
-            {
-                var AsList = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
-                CountriesAdapter = new CovidReportAdapter(AsList);
-                CountriesAdapter.ItemClick += CountriesAdapter_ItemClick;
-                mRecyclerView.SetAdapter(CountriesAdapter);
-                CachedLevel++;
-            }
-        }
-
-        private void ApiListener_Failure(object sender, Exception e)
-        {
-        }
-        #endregion
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -153,8 +117,6 @@ namespace Covid.Droid.Activities
         {
             throw new NotImplementedException();
         }
-
-        //Change title. Wrap width. Wrap height (it's going under the menu).
         void SwitchToInfo()
         {
             HideGlobal();

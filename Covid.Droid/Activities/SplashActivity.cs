@@ -13,6 +13,7 @@ using Android.Widget;
 using Covid.Lib;
 using Covid.Model;
 using Newtonsoft.Json;
+using NetDebug = System.Diagnostics.Debug;
 
 namespace Covid.Droid.Activities
 {
@@ -30,16 +31,20 @@ namespace Covid.Droid.Activities
         }
         void RandomAdvice()
         {
-            //@ToDo: fix stretching.
-            int[] Splashes = { Resource.Drawable.avoid_crowds, Resource.Drawable.wash_hands, Resource.Drawable.wash_hand_soap };
+            int[] Splashes = { 
+                Resource.Drawable.avoid_crowds,
+                Resource.Drawable.wash_hands, 
+                Resource.Drawable.wash_hand_soap, 
+                Resource.Drawable.caugh, 
+                Resource.Drawable.distance };
             Random Rnd = new Random();
             int RandomSplashId = Splashes[Rnd.Next(Splashes.Count())];
             imgSplash.SetImageResource(RandomSplashId);
         }
-        protected override async void OnResume()
+        protected override void OnResume()
         {
             base.OnResume();
-            InitApiConsumer();
+            Task.Run(async () => await InitApiConsumer());
         }
         private async Task InitApiConsumer()
         {
@@ -57,13 +62,16 @@ namespace Covid.Droid.Activities
             if (CovidResult is CovidReport)
             {
                 GlobalReport = (CovidReport)CovidResult;
+                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("global", GlobalReport.ToJson()).Commit();
             }
             else
             {
                 CountriesReport = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
+                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries", CountriesReport.ToJson()).Commit();
             }
             if (AllDone())
             {
+                NetDebug.Assert(CountriesReport.Any(), "We should have countries reports at this point.");
                 GoToMain();
             }
         }
@@ -71,6 +79,7 @@ namespace Covid.Droid.Activities
 
         private void GoToMain()
         {
+            GetFromCache();
             var intent = new Intent(this, typeof(MainActivity));
             intent.PutExtra(nameof(GlobalReport), JsonConvert.SerializeObject(GlobalReport));
             intent.PutExtra(nameof(CountriesReport), JsonConvert.SerializeObject(CountriesReport));
@@ -79,7 +88,24 @@ namespace Covid.Droid.Activities
         }
         private void ApiListener_Failure(object sender, Exception e)
         {
-            //@ToDo: do something with failure. (Such as using a backup API!)
+            //@ToDo: do something with failure.
+            GetFromCache();
+            Toast.MakeText(this, "Hubo un error al actualizar. Usamos la info de la última actualización.", ToastLength.Long).Show();
+            GoToMain();
+        }
+        void GetFromCache()
+        {
+            try
+            {
+                GlobalReport = GetSharedPreferences("cache", FileCreationMode.Private).GetString("global", null).FromJson<CovidReport>();
+                CountriesReport = GetSharedPreferences("cache", FileCreationMode.Private).GetString("by_countries", null).FromJson<List<CovidCountryReport>>();
+            }
+            catch (Exception ex)
+            {
+                NetDebug.WriteLine(ex);
+                Toast.MakeText(this, "Imposible iniciar, vuelva a intentar", ToastLength.Short);
+                Finish();
+            }
         }
     }
 }

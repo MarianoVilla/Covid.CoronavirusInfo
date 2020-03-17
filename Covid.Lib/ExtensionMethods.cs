@@ -1,4 +1,5 @@
 ﻿using Covid.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,5 +45,7 @@ namespace Covid.Lib
                 c.CountryCode = Const.CountryEquiv.NamesCodes.FirstOrDefault(x => x.Key == c.Country).Value;
             }
         }
+        public static string ToJson(this object TheObject) => JsonConvert.SerializeObject(TheObject);
+        public static T FromJson<T>(this string TheJson) => JsonConvert.DeserializeObject<T>(TheJson);
     }
 }

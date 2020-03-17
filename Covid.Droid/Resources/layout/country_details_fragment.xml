@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -45,6 +45,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/number"
                     android:text="Cantidad"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -61,6 +62,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/rip"
                     android:text="Muertos"/>
 
                 <TextView
@@ -78,6 +80,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/exclamation"
                     android:text="Anunciados hoy"/>
                 <TextView
                     android:layout_width="match_parent"
@@ -93,6 +96,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/rip_today"
                     android:text="Muertos hoy"/>
 
                 <TextView
@@ -110,6 +114,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/exclamation_2"
                     android:text="Críticos"/>
 
                 <TextView
@@ -127,6 +132,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/play"
                     android:text="Activos"/>
 
                 <TextView
@@ -144,6 +150,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="20dp"
+                    android:drawableLeft="@drawable/plus"
                     android:text="Recuperados"/>
 
                 <TextView
