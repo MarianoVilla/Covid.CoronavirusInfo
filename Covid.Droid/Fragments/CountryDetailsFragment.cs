@@ -11,6 +11,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Covid.Model;
+using Covid.Lib;
 
 namespace Covid.Droid.Fragments
 {
@@ -25,6 +26,7 @@ namespace Covid.Droid.Fragments
         TextView txtActiveCases;
         TextView txtRecoveredCases;
         TextView txtDeathCases;
+        TextView txtDeathRate;
         ImageView imgCloseDetails;
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -34,7 +36,7 @@ namespace Covid.Droid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            RootView = inflater.Inflate(Resource.Layout.country_details_fragment, container, false);
+            RootView = inflater.Inflate(Resource.Layout.country_details_fragment_grid, container, false);
             InitControls();
             return RootView;
         }
@@ -49,8 +51,9 @@ namespace Covid.Droid.Fragments
             txtRecoveredCases = FindViewById<TextView>(Resource.Id.txtRecoveredCases);
             txtDeathCases = FindViewById<TextView>(Resource.Id.txtDeathCases);
             txtTodayDeaths = FindViewById<TextView>(Resource.Id.txtTodayDeaths);
-            imgCloseDetails = FindViewById<ImageView>(Resource.Id.imgCloseDetails);
-            imgCloseDetails.Click += ImgCloseDetails_Click;
+            txtDeathRate = FindViewById<TextView>(Resource.Id.txtDeathRate);
+            //imgCloseDetails = FindViewById<ImageView>(Resource.Id.imgCloseDetails);
+            //imgCloseDetails.Click += ImgCloseDetails_Click;
 
         }
         public CountryDetailsFragment()
@@ -66,13 +69,14 @@ namespace Covid.Droid.Fragments
         public void Update(CovidCountryReport Report)
         {
             txtCountryName.Text = Report.RegionalFriendlyName ?? Report.Country;
-            txtCountryCount.Text = Report.Cases;
-            txtTodayCases.Text = Report.TodayCases.ToString();
-            txtCriticalCases.Text = Report.Critical.ToString();
-            txtActiveCases.Text = Report.Active.ToString();
-            txtRecoveredCases.Text = Report.Recovered;
-            txtDeathCases.Text = Report.Deaths;
-            txtTodayDeaths.Text = Report.TodayDeaths.ToString();
+            txtCountryCount.Text = Report.Cases.ToKMB();
+            txtTodayCases.Text = Report.TodayCases.ToString().TryToLongKMB();
+            txtCriticalCases.Text = Report.Critical.ToString().TryToLongKMB();
+            txtActiveCases.Text = Report.Active.ToString().TryToLongKMB();
+            txtRecoveredCases.Text = Report.Recovered.ToKMB();
+            txtDeathCases.Text = Report.Deaths.ToKMB();
+            txtTodayDeaths.Text = Report.TodayDeaths.ToString().TryToLongKMB();
+            txtDeathRate.Text = Report.DeathRate?.ToString() ?? "N/A";
             ResolveFlagDrawable(Report.CountryCode);
 
         }

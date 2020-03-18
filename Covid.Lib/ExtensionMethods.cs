@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -47,5 +48,84 @@ namespace Covid.Lib
         }
         public static string ToJson(this object TheObject) => JsonConvert.SerializeObject(TheObject);
         public static T FromJson<T>(this string TheJson) => JsonConvert.DeserializeObject<T>(TheJson);
+
+        public static string ToKMB(this decimal num)
+        {
+            if (num > 999999999 || num < -999999999)
+            {
+                return num.ToString("0,,,.###B", CultureInfo.InvariantCulture);
+            }
+            else
+            if (num > 999999 || num < -999999)
+            {
+                return num.ToString("0,,.##M", CultureInfo.InvariantCulture);
+            }
+            else
+            if (num > 999 || num < -999)
+            {
+                return num.ToString("0,.#K", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return num.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+        public static long AsLong(this string TheString)
+        {
+            if (long.TryParse(TheString, out long TheResult))
+                return TheResult;
+            return 0;
+        }
+        public static string TryToLongKMB(this string TheString)
+        {
+            var AsLong = TheString.AsLong();
+            return AsLong == 0 ? TheString : AsLong.ToKMB();
+        }
+        public static string ToKMB(this long num)
+        {
+            if (num > 999999999 || num < -999999999)
+            {
+                return num.ToString("0,,,.###B", CultureInfo.InvariantCulture);
+            }
+            else
+            if (num > 999999 || num < -999999)
+            {
+                return num.ToString("0,,.##M", CultureInfo.InvariantCulture);
+            }
+            else
+            if (num > 999 || num < -999)
+            {
+                return num.ToString("0,.#K", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return num.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+        public static string ToKMB(this int num)
+        {
+            if (num > 999999999 || num < -999999999)
+            {
+                return num.ToString("0,,,.###B", CultureInfo.InvariantCulture);
+            }
+            else
+            if (num > 999999 || num < -999999)
+            {
+                return num.ToString("0,,.##M", CultureInfo.InvariantCulture);
+            }
+            else
+            if (num > 999 || num < -999)
+            {
+                return num.ToString("0,.#K", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return num.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+        public static string ToKMB(this int? num)
+        {
+            return num is null ? null : ((int)num).ToKMB();
+        }
     }
 }

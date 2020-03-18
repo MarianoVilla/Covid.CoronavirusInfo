@@ -37,7 +37,7 @@ namespace Covid.Droid.Model
         {
             txtCountryName.Text = Report.RegionalFriendlyName ?? Report.Country;
             //txtCountryName.SetCompoundDrawablesWithIntrinsicBounds(CountryNameDrawable, null, null, null);
-            txtCases.Text = Report.Cases;
+            txtCases.Text = Report.Cases.ToString();
         }
     }
 }

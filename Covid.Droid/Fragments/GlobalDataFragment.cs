@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Covid.Model;
+using Covid.Lib;
 
 namespace Covid.Droid.Fragments
 {
@@ -39,9 +40,9 @@ namespace Covid.Droid.Fragments
         }
         public void Update(CovidReport Report)
         {
-            txtGlobalCases.Text = Report.Cases;
-            txtGlobalDeaths.Text = Report.Deaths;
-            txtGlobalRecovered.Text = Report.Recovered;
+            txtGlobalCases.Text = Report.Cases.ToKMB();
+            txtGlobalDeaths.Text = Report.Deaths.ToKMB();
+            txtGlobalRecovered.Text = Report.Recovered.ToKMB();
         }
     }
 }
