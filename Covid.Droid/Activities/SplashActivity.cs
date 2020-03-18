@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Covid.Lib;
 using Covid.Model;
@@ -36,7 +32,9 @@ namespace Covid.Droid.Activities
                 Resource.Drawable.wash_hands, 
                 Resource.Drawable.wash_hand_soap, 
                 Resource.Drawable.caugh, 
-                Resource.Drawable.distance };
+                Resource.Drawable.distance,
+                Resource.Drawable.wash_hands_water,
+                Resource.Drawable.soap_alcohol};
             Random Rnd = new Random();
             int RandomSplashId = Splashes[Rnd.Next(Splashes.Count())];
             imgSplash.SetImageResource(RandomSplashId);
@@ -71,7 +69,6 @@ namespace Covid.Droid.Activities
             }
             if (AllDone())
             {
-                NetDebug.Assert(CountriesReport.Any(), "We should have countries reports at this point.");
                 GoToMain();
             }
         }
@@ -79,7 +76,6 @@ namespace Covid.Droid.Activities
 
         private void GoToMain()
         {
-            GetFromCache();
             var intent = new Intent(this, typeof(MainActivity));
             intent.PutExtra(nameof(GlobalReport), JsonConvert.SerializeObject(GlobalReport));
             intent.PutExtra(nameof(CountriesReport), JsonConvert.SerializeObject(CountriesReport));

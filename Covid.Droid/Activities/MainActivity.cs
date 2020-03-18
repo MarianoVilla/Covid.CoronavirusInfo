@@ -83,6 +83,7 @@ namespace Covid.Droid.Activities
         private void CountriesAdapter_ItemClick(object sender, CovidCountryReport Report)
         {
             DetailsFragment.Update(Report);
+            HideByCountries();
             var fm = this.SupportFragmentManager;
             fm.BeginTransaction().SetCustomAnimations(Resource.Animation.abc_fade_in, Resource.Animation.abc_fade_out).Show(DetailsFragment).Commit();
         }

@@ -53,12 +53,14 @@ namespace Covid.Droid.Fragments
             imgCloseDetails.Click += ImgCloseDetails_Click;
 
         }
+        public CountryDetailsFragment()
+        {
+        }
 
         private void ImgCloseDetails_Click(object sender, EventArgs e)
         {
             FragmentManager.BeginTransaction().Hide(this).Commit();
         }
-
         T FindViewById<T>(int ResourceId) where T: View => RootView.FindViewById<T>(ResourceId);
 
         public void Update(CovidCountryReport Report)
@@ -77,6 +79,8 @@ namespace Covid.Droid.Fragments
 
         void ResolveFlagDrawable(string CountryCode)
         {
+            if (CountryCode is null)
+                return;
             //@ToDo: find a better fallback flag.
             var FlagId = Resources.GetIdentifier(CountryCode.ToLower(), nameof(Resource.Drawable).ToLower(), Activity.PackageName);
             if (FlagId == 0)

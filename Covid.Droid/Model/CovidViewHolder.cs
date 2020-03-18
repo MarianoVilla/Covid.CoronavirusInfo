@@ -30,10 +30,13 @@ namespace Covid.Droid.Model
             // was clicked (by layout position) to the listener:
             itemView.Click += (sender, e) => listener(base.LayoutPosition);
         }
-        public void Update(CovidCountryReport Report, Drawable CountryNameDrawable)
+        //@ToDo: find a way to get a Drawable here.
+        //@body The design doesn't seem to be helping. I thought about putting the flag as a property on the CovidCountryReport, but that makes caching harder.
+        //The next choice would be a pointer to an image, but that's what the CountryCode is for, so it kind of defeats the purpose of that.
+        public void Update(CovidCountryReport Report)
         {
             txtCountryName.Text = Report.RegionalFriendlyName ?? Report.Country;
-            txtCountryName.SetCompoundDrawablesWithIntrinsicBounds(CountryNameDrawable, null, null, null);
+            //txtCountryName.SetCompoundDrawablesWithIntrinsicBounds(CountryNameDrawable, null, null, null);
             txtCases.Text = Report.Cases;
         }
     }

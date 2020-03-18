@@ -11,14 +11,14 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardElevation="4dp"
+            card_view:cardElevation="8dp"
             card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="5dp">
+            card_view:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,123 +34,182 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="30dp"
+                        android:textSize="40dp"
                         android:gravity="center"
                         android:id="@+id/txtCountryName"
                         android:text="País"/>
                 </LinearLayout>
-                <TextView
+
+
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/number"
-                    android:text="Cantidad"/>
-                <TextView
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout1"
+                        android:layout_alignParentRight="true"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:layout_gravity="right"
+                            android:drawableTop="@drawable/rip"
+                            android:text="Muertos"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textSize="30dp"
+                            android:id="@+id/txtDeathCases"
+                            android:text="1000"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_toLeftOf="@id/linearLayout1"
+                        android:orientation="vertical"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:layout_gravity="left"
+                            android:drawableTop="@drawable/number"
+                            android:text="Casos"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:gravity="left"
+                            android:id="@+id/txtCountryCount"
+                            android:text="1000"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="30dp"
-                    android:id="@+id/txtCountryCount"
-                    android:text="1000"/>
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="18dp"
+                            android:drawableTop="@drawable/exclamation"
+                            android:text="Anunciados hoy"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="30dp"
+                            android:id="@+id/txtTodayCases"
+                            android:text="1000"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_toRightOf="@id/linearLayout2"
+                        android:orientation="vertical"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textSize="18dp"
+                            android:drawableTop="@drawable/rip_today"
+                            android:text="Muertos hoy"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textSize="30dp"
+                            android:id="@+id/txtTodayDeaths"
+                            android:text="1000"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout3"
+                        android:layout_alignParentLeft="true"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="18dp"
+                            android:drawableTop="@drawable/exclamation_2"
+                            android:text="Críticos"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:textSize="30dp"
+                            android:id="@+id/txtCriticalCases"
+                            android:text="1000"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_toRightOf="@id/linearLayout3"
+                        android:orientation="vertical"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textSize="18dp"
+                            android:drawableTop="@drawable/play"
+                            android:text="Activos"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:textSize="30dp"
+                            android:id="@+id/txtActiveCases"
+                            android:text="1000"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/rip"
-                    android:text="Muertos"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="30dp"
-                    android:id="@+id/txtDeathCases"
-                    android:text="1000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/exclamation"
-                    android:text="Anunciados hoy"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="30dp"
-                    android:id="@+id/txtTodayCases"
-                    android:text="1000"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/rip_today"
-                    android:text="Muertos hoy"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="30dp"
-                    android:id="@+id/txtTodayDeaths"
-                    android:text="1000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/exclamation_2"
-                    android:text="Críticos"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="30dp"
-                    android:id="@+id/txtCriticalCases"
-                    android:text="1000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/play"
-                    android:text="Activos"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="30dp"
-                    android:id="@+id/txtActiveCases"
-                    android:text="1000"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textAlignment="center"
-                    android:textSize="20dp"
-                    android:drawableLeft="@drawable/plus"
+                    android:textSize="22dp"
+                    android:drawableTop="@drawable/plus"
                     android:text="Recuperados"/>
 
                 <TextView
@@ -158,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:textAlignment="center"
-                    android:textSize="30dp"
+                    android:textSize="36dp"
                     android:id="@+id/txtRecoveredCases"
                     android:text="1000"/>
 
@@ -173,9 +232,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="right|top"
-        android:layout_margin="6dp"
+        android:layout_margin="18dp"
         android:id="@+id/imgCloseDetails"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
-
-
 </FrameLayout>
