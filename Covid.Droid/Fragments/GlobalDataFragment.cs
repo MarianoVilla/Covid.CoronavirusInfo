@@ -53,6 +53,7 @@ namespace Covid.Droid.Fragments
         private void CardGlobalCases_Click(object sender, EventArgs e)
         {
             //@ToDo add some responsiveness to these cards.
+            //@ToDo handle fragments history.
         }
 
         public void Update(CovidReport Report)
