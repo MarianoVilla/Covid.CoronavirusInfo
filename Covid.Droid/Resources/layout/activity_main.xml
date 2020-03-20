@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"    />
 
-        <fragment
+    <fragment
         android:id="@+id/infoFragment"
         android:layout_below="@id/txtTitle"
         class="Covid.Droid.Fragments.InfoFragment"
@@ -44,7 +44,6 @@
         android:layout_height="wrap_content"    />
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_below="@id/txtTitle"
         android:visibility="invisible"

@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Covid.Model;
 using Covid.Lib;
+using Android.Support.V7.Widget;
 
 namespace Covid.Droid.Fragments
 {
@@ -20,6 +21,9 @@ namespace Covid.Droid.Fragments
         TextView txtGlobalCases;
         TextView txtGlobalDeaths;
         TextView txtGlobalRecovered;
+        CardView cardGlobalCases;
+        CardView cardGlobalDeaths;
+        CardView cardGlobalRecovered;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -37,12 +41,26 @@ namespace Covid.Droid.Fragments
             this.txtGlobalCases = RootView.FindViewById<TextView>(Resource.Id.txtGlobalCases);
             this.txtGlobalDeaths = RootView.FindViewById<TextView>(Resource.Id.txtGlobalDeaths);
             this.txtGlobalRecovered = RootView.FindViewById<TextView>(Resource.Id.txtGlobalRecovered);
+            this.cardGlobalCases = RootView.FindViewById<CardView>(Resource.Id.cardGlobalCases);
+            this.cardGlobalDeaths = RootView.FindViewById<CardView>(Resource.Id.cardGlobalDeaths);
+            this.cardGlobalRecovered = RootView.FindViewById<CardView>(Resource.Id.cardGlobalRecovered);
+
+            this.cardGlobalCases.Click += CardGlobalCases_Click; ;
+            this.cardGlobalDeaths.Click += CardGlobalCases_Click;
+            this.cardGlobalRecovered.Click += CardGlobalCases_Click;
         }
+
+        private void CardGlobalCases_Click(object sender, EventArgs e)
+        {
+            //@ToDo add some responsiveness to these cards.
+        }
+
         public void Update(CovidReport Report)
         {
             txtGlobalCases.Text = Report.Cases.ToKMB();
             txtGlobalDeaths.Text = Report.Deaths.ToKMB();
             txtGlobalRecovered.Text = Report.Recovered.ToKMB();
         }
+
     }
 }

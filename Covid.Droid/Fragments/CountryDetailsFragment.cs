@@ -12,6 +12,9 @@ using Android.Views;
 using Android.Widget;
 using Covid.Model;
 using Covid.Lib;
+using Com.Tomergoldst.Tooltips;
+using Covid.Droid.Model;
+using Android.Support.V7.Widget;
 
 namespace Covid.Droid.Fragments
 {
@@ -27,7 +30,21 @@ namespace Covid.Droid.Fragments
         TextView txtRecoveredCases;
         TextView txtDeathCases;
         TextView txtDeathRate;
-        ImageView imgCloseDetails;
+
+        CardView cardCountryCount;
+        CardView cardTodayCases;
+        CardView cardTodayDeaths;
+        CardView cardCriticalCases;
+        CardView cardActiveCases;
+        CardView cardRecoveredCases;
+        CardView cardDeathCases;
+        CardView cardDeathRate;
+
+        ImageView btnCloseDetails;
+
+        public event EventHandler OnDestroyCallback;
+        public event EventHandler OnItemClickCallback;
+        public CountryDetailsFragment() { }
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -52,19 +69,51 @@ namespace Covid.Droid.Fragments
             txtDeathCases = FindViewById<TextView>(Resource.Id.txtDeathCases);
             txtTodayDeaths = FindViewById<TextView>(Resource.Id.txtTodayDeaths);
             txtDeathRate = FindViewById<TextView>(Resource.Id.txtDeathRate);
-            //imgCloseDetails = FindViewById<ImageView>(Resource.Id.imgCloseDetails);
-            //imgCloseDetails.Click += ImgCloseDetails_Click;
+            btnCloseDetails = FindViewById<ImageButton>(Resource.Id.btnCloseDetails);
+
+            cardCountryCount = FindViewById<CardView>(Resource.Id.cardCountryCount);
+            cardTodayCases = FindViewById<CardView>(Resource.Id.cardTodayCases);
+            cardTodayDeaths = FindViewById<CardView>(Resource.Id.cardTodayDeaths);
+            cardCriticalCases = FindViewById<CardView>(Resource.Id.cardCriticalCases);
+            cardActiveCases = FindViewById<CardView>(Resource.Id.cardActiveCases);
+            cardRecoveredCases = FindViewById<CardView>(Resource.Id.cardRecoveredCases);
+            cardDeathCases = FindViewById<CardView>(Resource.Id.cardDeathCases);
+            cardDeathRate = FindViewById<CardView>(Resource.Id.cardDeathRate);
+
+            cardRecoveredCases.Click += Card_Click;
+            cardCountryCount.Click += Card_Click;
+            cardTodayCases.Click += Card_Click;
+            cardTodayDeaths.Click += Card_Click;
+            cardCriticalCases.Click += Card_Click;
+            cardActiveCases.Click += Card_Click;
+            cardDeathCases.Click += Card_Click;
+            cardDeathRate.Click += Card_Click;
+
+
+            btnCloseDetails.Click += ImgCloseDetails_Click;
 
         }
-        public CountryDetailsFragment()
+
+        private void Card_Click(object sender, EventArgs e)
         {
+            var SenderView = sender as CardView;
+            if (SenderView is null)
+                return;
+            var XY = SenderView.Tag.ToString().Split(',');
+            OnItemClickCallback?.Invoke(this, new DetailsItemClickEventArgs(SenderView, SenderView.ContentDescription, XY[1] == "0" ?  ToolTip.PositionRightTo : ToolTip.PositionLeftTo));
         }
+
+        private void TxtCountryName_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         private void ImgCloseDetails_Click(object sender, EventArgs e)
         {
-            FragmentManager.BeginTransaction().Hide(this).Commit();
+            OnDestroyCallback?.Invoke(this, EventArgs.Empty);
         }
-        T FindViewById<T>(int ResourceId) where T: View => RootView.FindViewById<T>(ResourceId);
+        T FindViewById<T>(int ResourceId) where T : View => RootView.FindViewById<T>(ResourceId);
 
         public void Update(CovidCountryReport Report)
         {
@@ -78,7 +127,6 @@ namespace Covid.Droid.Fragments
             txtTodayDeaths.Text = Report.TodayDeaths.ToString().TryToLongKMB();
             txtDeathRate.Text = Report.DeathRate?.ToString() ?? "N/A";
             ResolveFlagDrawable(Report.CountryCode);
-
         }
 
         void ResolveFlagDrawable(string CountryCode)

@@ -7,24 +7,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#D3D3D3"
-    android:weightSum="10">
+    android:background="@drawable/map"
+    android:weightSum="10"
+    android:id="@+id/rootView">
 
     <RelativeLayout
         android:layout_weight="2"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
+                    <ImageButton
+        android:contentDescription="Volver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:id="@+id/btnCloseDetails"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
         <TextView
             android:id="@+id/txtCountryName"
             android:text="País"
-            android:textSize="28sp"
+            android:textSize="36sp"
             android:textColor="#000"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
+
 
     <GridLayout
         android:id="@+id/mainGrid"
@@ -36,12 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="14dp">
-
-        <!-- ROW 1  -->
-        <!-- COLUMN 1  -->
-
-
-
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -51,12 +55,16 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="0,0"
+            android:contentDescription="Cantidad de casos."
+            android:id="@+id/cardCountryCount"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="16dp"
                 android:orientation="vertical"
+                android:id="@+id/linearLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -73,6 +81,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:id="@+id/txtCountryCount"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -91,6 +100,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="0,1"
+            android:contentDescription="Cantidad de muertos."
+            android:id="@+id/cardDeathCases"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -110,6 +122,7 @@
                     android:textAlignment="center"
                     android:text="Text2"
                     android:id="@+id/txtDeathCases"
+                    android:layout_gravity="center"
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -134,6 +147,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="1,0"
+            android:contentDescription="Anunciados hoy."
+            android:id="@+id/cardTodayCases"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -152,6 +168,7 @@
                 <TextView
                     android:textAlignment="center"
                     android:text="Text3"
+                    android:layout_gravity="center"
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -174,6 +191,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="1,1"
+            android:contentDescription="Fallecidos hoy."
+            android:id="@+id/cardTodayDeaths"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -190,8 +210,9 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:textAlignment="center"
-                    android:text="Text4"
+                    android:textAlignment="viewEnd"
+                    android:text="28200595"
+                    android:layout_gravity="center"
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -216,6 +237,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="2,0"
+            android:id="@+id/cardCriticalCases"
+            android:contentDescription="Casos críticos."
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -237,6 +261,7 @@
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_gravity="center"
                     android:id="@+id/txtCriticalCases"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -256,6 +281,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="2,1"
+            android:id="@+id/cardActiveCases"
+            android:contentDescription="Casos activos."
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -278,6 +306,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="center"
                     android:id="@+id/txtActiveCases"
                     android:layout_height="wrap_content" />
 
@@ -294,6 +323,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="3,0"
+            android:contentDescription="Recuperados."
+            android:id="@+id/cardRecoveredCases"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -315,7 +347,8 @@
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:id="@id/txtRecoveredCases"
+                    android:id="@+id/txtRecoveredCases"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -334,6 +367,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
+            android:tag="3,1"
+            android:contentDescription="Tasa de muerte."
+            android:id="@+id/cardDeathRate"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -356,6 +392,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
+                    android:layout_gravity="center"
                     android:id="@+id/txtDeathRate"
                     android:layout_height="wrap_content" />
 
@@ -363,11 +400,6 @@
 
         </android.support.v7.widget.CardView>
 
-
     </GridLayout>
-
-
-
-
 
 </LinearLayout>

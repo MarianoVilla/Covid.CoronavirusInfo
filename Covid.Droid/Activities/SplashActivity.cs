@@ -42,7 +42,7 @@ namespace Covid.Droid.Activities
         protected override void OnResume()
         {
             base.OnResume();
-            Task.Run(async () => await InitApiConsumer());
+            Task.Run(() => InitApiConsumer());
         }
         private async Task InitApiConsumer()
         {
