@@ -133,10 +133,9 @@ namespace Covid.Droid.Fragments
         {
             if (CountryCode is null)
                 return;
-            //@ToDo: find a better fallback flag.
             var FlagId = Resources.GetIdentifier(CountryCode.ToLower(), nameof(Resource.Drawable).ToLower(), Activity.PackageName);
             if (FlagId == 0)
-                FlagId = Resource.Drawable.marker;
+                FlagId = Resource.Drawable.flag_purple;    
             var draw = Context.GetDrawable(FlagId);
             txtCountryName.SetCompoundDrawablesWithIntrinsicBounds(null, draw, null, null);
         }

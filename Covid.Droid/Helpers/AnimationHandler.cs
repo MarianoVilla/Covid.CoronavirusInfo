@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -15,6 +15,7 @@ namespace Covid.Droid.Helpers
     public class AnimationHandler
     {
         View Control;
+        Dictionary<View, bool> IsAnimating = new Dictionary<View, bool>();
         #region Constructors.
         public AnimationHandler(View Control)
         {
@@ -25,8 +26,12 @@ namespace Covid.Droid.Helpers
 
         public void FadeIn(View Control = null, float Alpha = 100, long Duration = 1000)
         {
+            if (IsAnimating[Control])
+                return;
+            IsAnimating.TryAdd(Control, true);
             Control = Control ?? this.Control;
             Control.Animate().Alpha(100).SetDuration(Duration).Start();
+            _ = Task.Delay((int)Duration).ContinueWith((task) => IsAnimating[Control] = false);
         }
         public void FadeOut(View Control = null, float Alpha = 0, long Duration = 1000)
         {

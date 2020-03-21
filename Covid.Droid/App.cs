@@ -28,10 +28,6 @@ namespace Covid.Droid
         private void Init()
         {
             //GitRawConsumer.GetDailyCsv();
-            var Cookies = new CookieContainer();
-            var Handler = new HttpClientHandler() { CookieContainer = Cookies };
-            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.Endpoints.FirstOrDefault(x => x.IsWorking("All")) };
-            Const.GlobalHttpClient.DefaultRequestHeaders.Add("accept", "*/*");
             LoadCountryEquivalences();
         }
 

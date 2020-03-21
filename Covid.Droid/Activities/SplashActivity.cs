@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -42,16 +44,44 @@ namespace Covid.Droid.Activities
         protected override void OnResume()
         {
             base.OnResume();
+            if (CacheIsRecent())
+            {
+                LoadDataFromCache();
+                GoToMain();
+                return;
+            }
             Task.Run(() => InitApiConsumer());
         }
+
+        private bool CacheIsRecent()
+        {
+            var GlobalStamp = GetSharedPreferences("cache", FileCreationMode.Private).GetString("global_timestamp", null);
+            var ByCountriesStamp = GetSharedPreferences("cache", FileCreationMode.Private).GetString("by_countries_timestamp", null);
+            if (GlobalStamp is null || ByCountriesStamp is null)
+                return false;
+            var ParsedGlobal = DateTime.Parse(GlobalStamp);
+            var ParsedByCountries = DateTime.Parse(ByCountriesStamp);
+            return LessThanNDaysAgo(ParsedGlobal) && LessThanNDaysAgo(ParsedByCountries);
+
+        }
+        bool LessThanNDaysAgo(DateTime Date, int n = 1) => (DateTime.Now - Date).TotalDays < n;
+
         private async Task InitApiConsumer()
         {
+            InitHttpClient();
             Api = new ApiConsumer();
             var ApiListener = new RestCompletionListener(ApiListener_Success, ApiListener_Failure);
             Api.AddOnSuccessListener(ApiListener);
             Api.AddOnFailureListener(ApiListener);
             await Api.GetGlobal();
             await Api.GetDataByCountries();
+        }
+        private static void InitHttpClient()
+        {
+            var Cookies = new CookieContainer();
+            var Handler = new HttpClientHandler() { CookieContainer = Cookies };
+            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.Endpoints.FirstOrDefault(x => x.IsWorking("All")) };
+            Const.GlobalHttpClient.DefaultRequestHeaders.Add("accept", "*/*");
         }
         CovidReport GlobalReport;
         List<CovidCountryReport> CountriesReport;
@@ -61,11 +91,13 @@ namespace Covid.Droid.Activities
             {
                 GlobalReport = (CovidReport)CovidResult;
                 GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("global", GlobalReport.ToJson()).Commit();
+                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("global_timestamp", DateTime.Now.ToString()).Commit();
             }
             else
             {
                 CountriesReport = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
                 GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries", CountriesReport.ToJson()).Commit();
+                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries_timestamp", DateTime.Now.ToString()).Commit();
             }
             if (AllDone())
             {
@@ -84,11 +116,11 @@ namespace Covid.Droid.Activities
         }
         private void ApiListener_Failure(object sender, Exception e)
         {
-            GetFromCache();
+            LoadDataFromCache();
             Toast.MakeText(this, "Hubo un error al actualizar. Usamos la info de la última actualización.", ToastLength.Long).Show();
             GoToMain();
         }
-        void GetFromCache()
+        void LoadDataFromCache()
         {
             try
             {

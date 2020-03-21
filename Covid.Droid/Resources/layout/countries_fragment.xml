@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtSearchCountry"
-            android:layout_gravity="top|center"
-            android:background="@drawable/editextrounded"
-            android:textAlignment="center"
-            android:hint="Buscar"
-            android:inputType="text"
-            android:imeOptions="actionSearch"
-            android:layout_marginTop="1dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_below="@id/txtSearchCountry"
         android:scrollbars="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/txtSearchCountry"/>
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

@@ -12,6 +12,9 @@ using Android.Widget;
 using Covid.Model;
 using Covid.Lib;
 using Android.Support.V7.Widget;
+using Android.Support.Design.Animation;
+using System.Threading.Tasks;
+using Covid.Droid.Helpers;
 
 namespace Covid.Droid.Fragments
 {
@@ -49,11 +52,15 @@ namespace Covid.Droid.Fragments
             this.cardGlobalDeaths.Click += CardGlobalCases_Click;
             this.cardGlobalRecovered.Click += CardGlobalCases_Click;
         }
-
+        //@ToDo countries searchbar.
+        //bool Animating;
         private void CardGlobalCases_Click(object sender, EventArgs e)
         {
-            //@ToDo add some responsiveness to these cards.
-            //@ToDo handle fragments history.
+            //if(Animating)
+            //    return;
+            //Animating = true; 
+            //(sender as CardView).Animate().BackAndForthX(Activity);
+            //Task.Delay(600).ContinueWith((task) => Animating = false);
         }
 
         public void Update(CovidReport Report)
