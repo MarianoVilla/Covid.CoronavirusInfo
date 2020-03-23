@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Covid.Model;
 
 namespace Covid.Droid.Helpers
 {
@@ -18,6 +19,14 @@ namespace Covid.Droid.Helpers
         {
             TheAnimator.ScaleX(First).SetDuration(Duration).Start();
             Task.Delay(300).ContinueWith((task) => ParentActivity.RunOnUiThread(() => TheAnimator.ScaleX(Then).Start()));
+        }
+        public static void LoadFavouritesFromPreferences(this IEnumerable<CovidCountryReport> Reports, Context context)
+        {
+            var CachedReport = SharedPreferencesHandler.GetCountriesReport(context);
+            foreach(var r in Reports)
+            {
+                r.IsFavourite = CachedReport.FirstOrDefault(x => x.Country.ToLower() == r.Country.ToLower())?.IsFavourite ?? r.IsFavourite;
+            }
         }
     }
 }

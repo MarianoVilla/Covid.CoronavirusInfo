@@ -8,11 +8,12 @@ namespace Covid.Model
     {
         public string Country { get; set; }
         public string RegionalFriendlyName { get; set; }
+        public bool IsFavourite { get; set; }
         public string CountryCode { get; set; }
         public int? TodayCases { get; set; }
         public int? TodayDeaths { get; set; }
         public int? Active { get; set; }
         public int? Critical { get; set; }
-
+        public int? CasesPerOneMillion { get; set; }
     }
 }

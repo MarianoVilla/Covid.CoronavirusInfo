@@ -11,19 +11,19 @@ using Com.Tomergoldst.Tooltips;
 using Covid.Droid.Fragments;
 using Covid.Droid.Helpers;
 using Covid.Droid.Model;
-using Covid.Lib;
 using Covid.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
 using static Com.Tomergoldst.Tooltips.ToolTipsManager;
 
 namespace Covid.Droid.Activities
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
+    
+    [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme", MainLauncher = false)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener, ITipListener
     {
         GlobalDataFragment GlobalFragment;
@@ -34,8 +34,6 @@ namespace Covid.Droid.Activities
         LinearLayout recyclerLayout;
         CountryDetailsFragment DetailsFragment;
         InfoFragment InfoFrag;
-        //ProgressBar progressBar;
-        //AnimationHandler Animator;
         CovidReport GlobalReport;
         List<CovidCountryReport> CountriesReport;
         ViewGroup RootView;
@@ -44,6 +42,7 @@ namespace Covid.Droid.Activities
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
@@ -52,25 +51,36 @@ namespace Covid.Droid.Activities
             InitControls();
             LoadBoundleData();
         }
+
+        protected override void OnPause()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            base.OnPause();
+            SharedPreferencesHandler.SaveCountriesReport(this, this.CountriesReport);
+        }
+
         void GetBoundleData()
         {
-            GlobalReport = JsonConvert.DeserializeObject<CovidReport>(Intent.GetStringExtra(nameof(GlobalReport)));
-            CountriesReport = JsonConvert.DeserializeObject<List<CovidCountryReport>>(Intent.GetStringExtra(nameof(CountriesReport)));
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.GlobalReport = JsonConvert.DeserializeObject<CovidReport>(this.Intent.GetStringExtra(nameof(this.GlobalReport)));
+            this.CountriesReport = JsonConvert.DeserializeObject<List<CovidCountryReport>>(this.Intent.GetStringExtra(nameof(this.CountriesReport)));
         }
 
         private void LoadBoundleData()
         {
-            GlobalFragment.Update(GlobalReport);
-            CountriesAdapter = new CovidReportAdapter(CountriesReport);
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.GlobalFragment.Update(this.GlobalReport);
+            this.CountriesAdapter = new CovidReportAdapter(this.CountriesReport);
 
-            CountriesAdapter.ItemClick += CountriesAdapter_ItemClick;
-            mRecyclerView.SetAdapter(CountriesAdapter);
+            this.CountriesAdapter.ItemClick += CountriesAdapter_ItemClick;
+            this.mRecyclerView.SetAdapter(this.CountriesAdapter);
         }
         private void InitControls()
         {
-            RootView = FindViewById<ViewGroup>(Resource.Id.container);
-            txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
-            GlobalFragment = (GlobalDataFragment)SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.RootView = FindViewById<ViewGroup>(Resource.Id.container);
+            this.txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
+            this.GlobalFragment = (GlobalDataFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
 
             InitNavigation();
             InitRecyclerView();
@@ -78,33 +88,37 @@ namespace Covid.Droid.Activities
             InitDetailsFragment();
             InitTxtSearchCountries();
 
-            ToolTips = new ToolTipsManager(this);
+            this.ToolTips = new ToolTipsManager(this);
         }
 
         private void InitInfoFragment()
         {
-            InfoFrag = (InfoFragment)SupportFragmentManager.FindFragmentById(Resource.Id.infoFragment);
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.InfoFrag = (InfoFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.infoFragment);
             HideInfo();
         }
 
         private void InitRecyclerView()
         {
-            mLayoutManager = new LinearLayoutManager(this);
-            mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewMain);
-            mRecyclerView.SetLayoutManager(mLayoutManager);
-            recyclerLayout = FindViewById<LinearLayout>(Resource.Id.recyclerLayout);
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.mLayoutManager = new LinearLayoutManager(this);
+            this.mRecyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerViewMain);
+            this.mRecyclerView.SetLayoutManager(this.mLayoutManager);
+            this.recyclerLayout = FindViewById<LinearLayout>(Resource.Id.recyclerLayout);
         }
 
         private void InitDetailsFragment()
         {
-            DetailsFragment = (CountryDetailsFragment)SupportFragmentManager.FindFragmentById(Resource.Id.detailsFragment);
-            SupportFragmentManager.BeginTransaction().Hide(DetailsFragment).Commit();
-            DetailsFragment.OnDestroyCallback += DetailsFragment_OnDestroyCallback;
-            DetailsFragment.OnItemClickCallback += DetailsFragment_OnItemClickCallback;
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.DetailsFragment = (CountryDetailsFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.detailsFragment);
+            this.SupportFragmentManager.BeginTransaction().Hide(this.DetailsFragment).Commit();
+            this.DetailsFragment.OnDestroyCallback += DetailsFragment_OnDestroyCallback;
+            this.DetailsFragment.OnItemClickCallback += DetailsFragment_OnItemClickCallback;
         }
 
         private void InitNavigation()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
         }
@@ -112,76 +126,83 @@ namespace Covid.Droid.Activities
         #region txtSearchCountries.
         void InitTxtSearchCountries()
         {
-            txtSearchCountry = FindViewById<AutoCompleteTextView>(Resource.Id.txtSearchCountry);
-            txtSearchCountry.Click += TxtSearch_Click;
-            txtSearchCountry.EditorAction += TxtSearchCountry_EditorAction;
-            txtSearchCountry.Touch += TxtSearch_Touch;
-            txtSearchCountry.TextChanged += TxtSearch_TextChanged;
-            txtSearchCountry.Adapter = new ArrayAdapter<string>(this, Resource.Layout.list_item, CountriesReport.Select(x => x.Country).ToArray());
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.txtSearchCountry = FindViewById<AutoCompleteTextView>(Resource.Id.txtSearchCountry);
+            this.txtSearchCountry.Click += TxtSearch_Click;
+            this.txtSearchCountry.EditorAction += TxtSearchCountry_EditorAction;
+            this.txtSearchCountry.Touch += TxtSearch_Touch;
+            this.txtSearchCountry.TextChanged += TxtSearch_TextChanged;
+            this.txtSearchCountry.Adapter = new ArrayAdapter<string>(this, Resource.Layout.list_item, this.CountriesReport.Select(x => x.RegionalFriendlyName ?? x.Country).ToArray());
         }
 
         private void TxtSearchCountry_EditorAction(object sender, TextView.EditorActionEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtSearchCountry.Text))
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (string.IsNullOrWhiteSpace(this.txtSearchCountry.Text))
                 return;
-            CountriesAdapter.FilterByName(txtSearchCountry.Text);
+            this.CountriesAdapter.FilterByName(this.txtSearchCountry.Text);
         }
 
         private void TxtSearch_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            if (txtSearchCountry.Text.Length > 0)
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.txtSearchCountry.Text.Length > 0)
             {
-                txtSearchCountry.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.ic_cross_81577_32, 0);
+                this.txtSearchCountry.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.ic_cross_81577_32, 0);
             }
             else
             {
-                txtSearchCountry.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                this.txtSearchCountry.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
-            txtSearchCountry.ShowDropDown();
+            this.txtSearchCountry.ShowDropDown();
         }
         private void TxtSearch_Touch(object sender, View.TouchEventArgs e)
         {
-            var rightDrawable = txtSearchCountry.GetCompoundDrawables()[2];
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            Drawable rightDrawable = this.txtSearchCountry.GetCompoundDrawables()[2];
             if (rightDrawable == null || e.Event.Action != MotionEventActions.Up)
             {
                 e.Handled = false;
                 return;
             }
-            if (e.Event.GetX() >= txtSearchCountry.Width - txtSearchCountry.TotalPaddingRight)
+            if (e.Event.GetX() >= this.txtSearchCountry.Width - this.txtSearchCountry.TotalPaddingRight)
             {
-                txtSearchCountry.Text = string.Empty;
-                CountriesAdapter.Unfilter();
+                this.txtSearchCountry.Text = string.Empty;
+                this.CountriesAdapter.Unfilter();
                 e.Handled = true;
             }
             (sender as AutoCompleteTextView)?.OnTouchEvent(e.Event);
         }
-        private void TxtSearch_Click(object sender, EventArgs e) => txtSearchCountry.ShowDropDown();
+        private void TxtSearch_Click(object sender, EventArgs e) => this.txtSearchCountry.ShowDropDown();
         #endregion
 
         ToolTipsManager ToolTips;
         private void DetailsFragment_OnItemClickCallback(object sender, EventArgs e)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             var Args = e as DetailsItemClickEventArgs;
-            if(Args is null)
+            if (Args is null)
                 return;
 
-            var builder = new ToolTip.Builder(this, Args.Anchor, RootView, Args.ToolTipText, Args.Position ?? ToolTip.PositionAbove);
+            var builder = new ToolTip.Builder(this, Args.Anchor, this.RootView, Args.ToolTipText, Args.Position ?? ToolTip.PositionAbove);
             builder.SetAlign(ToolTip.AlignCenter);
             builder.SetBackgroundColor(Resource.Color.material_grey_50);
-            ToolTips.Show(builder.Build());
-            Task.Delay(2000).ContinueWith((task) => RunOnUiThread(() => ToolTips.FindAndDismiss(Args.Anchor)));
+            this.ToolTips.Show(builder.Build());
+            Task.Delay(2000).ContinueWith((task) => RunOnUiThread(() => this.ToolTips.FindAndDismiss(Args.Anchor)));
         }
 
         private void DetailsFragment_OnDestroyCallback(object sender, EventArgs e)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideDetails();
-            ToolTips.Clear();
+            this.ToolTips.Clear();
             ShowByCountries();
         }
 
         private void CountriesAdapter_ItemClick(object sender, CovidCountryReport Report)
         {
-            DetailsFragment.Update(Report);
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.DetailsFragment.Update(Report);
             HideByCountries();
             HideMainTitle();
             ShowDetails();
@@ -189,12 +210,14 @@ namespace Covid.Droid.Activities
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
         public bool OnNavigationItemSelected(IMenuItem item)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             switch (item.ItemId)
             {
                 case Resource.Id.navigation_global:
@@ -206,26 +229,29 @@ namespace Covid.Droid.Activities
                 case Resource.Id.navigation_info:
                     SwitchToInfo();
                     return true;
-                //case Resource.Id.navigation_about:
-                //    SwitchToAbout();
-                //    return true;
+                    //case Resource.Id.navigation_about:
+                    //    SwitchToAbout();
+                    //    return true;
             }
             return false;
         }
         void SwitchToGlobal()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideInfo();
             HideByCountries();
             ShowGlobal();
         }
         void SwitchToCountries()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideInfo();
             HideGlobal();
             ShowByCountries();
         }
         void SwitchToInfo()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideGlobal();
             HideByCountries();
             HideDetails();
@@ -234,87 +260,91 @@ namespace Covid.Droid.Activities
 
 
 
-        private void SwitchToAbout()
-        {
-            throw new NotImplementedException();
-        }
+        private void SwitchToAbout() => throw new NotImplementedException();
         void HideInfo()
         {
-            if (InfoFrag.IsHidden)
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.InfoFrag.IsHidden)
                 return;
-            var fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(InfoFrag).Commit();
+            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.InfoFrag).Commit();
             ShowMainTitle();
         }
         void ShowInfo()
         {
-            if (InfoFrag.IsVisible)
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.InfoFrag.IsVisible)
                 return;
             HideMainTitle();
             SetTitleDrawable(Resource.Drawable.exclamation);
-            var fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(InfoFrag).Commit();
+            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.InfoFrag).Commit();
         }
-        void HideMainTitle() 
-        { 
-            txtTitle.Animate().SetDuration(200).Alpha(0);
-            txtTitle.Visibility = ViewStates.Gone;
-        }
-        void ShowMainTitle(string Title = null) 
+        void HideMainTitle()
         {
-            txtTitle.Visibility = ViewStates.Visible;
-            txtTitle.Animate().SetDuration(200).Alpha(1);
-            txtTitle.Text = Title ?? txtTitle.Text;
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.txtTitle.Animate().SetDuration(200).Alpha(0);
+            this.txtTitle.Visibility = ViewStates.Gone;
         }
- 
+        void ShowMainTitle(string Title = null)
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.txtTitle.Visibility = ViewStates.Visible;
+            this.txtTitle.Animate().SetDuration(200).Alpha(1);
+            this.txtTitle.Text = Title ?? this.txtTitle.Text;
+        }
+
         void HideGlobal()
         {
-            if (GlobalFragment.IsHidden)
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.GlobalFragment.IsHidden)
                 return;
-            SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(GlobalFragment).Commit();
+            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.GlobalFragment).Commit();
         }
         void ShowGlobal()
         {
-            if (GlobalFragment.IsVisible)
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.GlobalFragment.IsVisible)
                 return;
             ShowMainTitle("Global");
             SetTitleDrawable(Resource.Drawable.world_earth);
-            SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(GlobalFragment).Commit();
+            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.GlobalFragment).Commit();
         }
-        void HideByCountries() 
+        void HideByCountries()
         {
-            recyclerLayout.Animate().SetDuration(200).Alpha(0);
-            recyclerLayout.Visibility = ViewStates.Invisible;
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.recyclerLayout.Animate().SetDuration(200).Alpha(0);
+            this.recyclerLayout.Visibility = ViewStates.Invisible;
             HideDetails();
         }
         void ShowByCountries()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             ShowMainTitle("Países");
             SetTitleDrawable(Resource.Drawable.country_icon);
-            recyclerLayout.Animate().SetDuration(300).Alpha(1);
-            recyclerLayout.Visibility = ViewStates.Visible;
+            this.recyclerLayout.Animate().SetDuration(300).Alpha(1);
+            this.recyclerLayout.Visibility = ViewStates.Visible;
         }
         void SetTitleDrawable(int TheDrawableId)
         {
-            var draw = ApplicationContext.GetDrawable(TheDrawableId);
-            txtTitle.SetCompoundDrawablesWithIntrinsicBounds(null, draw, null, null);
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            Drawable draw = this.ApplicationContext.GetDrawable(TheDrawableId);
+            this.txtTitle.SetCompoundDrawablesWithIntrinsicBounds(null, draw, null, null);
         }
         private void ShowDetails()
         {
-            SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(DetailsFragment).Commit();
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.DetailsFragment).Commit();
         }
         private void HideDetails()
         {
-            if (DetailsFragment.IsHidden)
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.DetailsFragment.IsHidden)
                 return;
-            SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(DetailsFragment).Commit();
+            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.DetailsFragment).Commit();
         }
 
-        public void OnTipDismissed(View p0, int p1, bool p2)
-        {
-            //@ToDo implement.
-            //throw new NotImplementedException();
-        }
+        public void OnTipDismissed(View p0, int p1, bool p2) => DebugHelper.Method(MethodBase.GetCurrentMethod());//@ToDo implement.//throw new NotImplementedException();
     }
 }
 

@@ -12,16 +12,18 @@ namespace Covid.Lib
     {
         public List<IOnSuccessListener> OnSuccessListeners { get; } = new List<IOnSuccessListener>();
         public List<IOnFailureListener> OnFailureListeners { get; } = new List<IOnFailureListener>();
-
         public void AddOnFailureListener(IOnFailureListener Listener) => OnFailureListeners.Add(Listener);
-
         public void AddOnSuccessListener(IOnSuccessListener Listener) => OnSuccessListeners.Add(Listener);
 
-        public async Task GetGlobal()
+        public static readonly Uri GlobalEndpoint;
+        public static readonly Uri ByCountriesEndpoint;
+        public static readonly Uri TimeseriesEndpoint;
+
+        public async Task GetGlobalAsync()
         {
             try
             {
-                using HttpResponseMessage Res = await Const.GlobalHttpClient.GetAsync("All");
+                using HttpResponseMessage Res = await Const.GlobalHttpClient.GetAsync(GlobalEndpoint);
                 if (Res.IsSuccessStatusCode)
                 {
                     using HttpContent content = Res.Content;
@@ -38,12 +40,11 @@ namespace Covid.Lib
                 NotifyFailure(ex);
             }
         }
-
-        public async Task GetDataByCountries()
+        public async Task GetDataByCountriesAsync()
         {
             try
             {
-                using HttpResponseMessage Res = await Const.GlobalHttpClient.GetAsync("Countries");
+                using HttpResponseMessage Res = await Const.GlobalHttpClient.GetAsync(ByCountriesEndpoint);
                 if (Res.IsSuccessStatusCode)
                 {
                     using HttpContent content = Res.Content;
@@ -55,6 +56,28 @@ namespace Covid.Lib
                 else
                 {
                     throw new Exception("Failed to get report by countries.");
+                }
+            }
+            catch (Exception ex)
+            {
+                NotifyFailure(ex);
+            }
+        }
+        [Obsolete("I ended up downloading the timeseries up to 22/03, then updating it as the days go by.")]
+        public async Task GetTimeseriesAsync()
+        {
+            try
+            {
+                using HttpResponseMessage Res = await Const.GlobalHttpClient.GetAsync(TimeseriesEndpoint);
+                if (Res.IsSuccessStatusCode)
+                {
+                    using HttpContent content = Res.Content;
+                    var Timeseries = await content.ReadAsAsync<CountryTimeseriesContainer>();
+                    NotifySuccess(Timeseries);
+                }
+                else
+                {
+                    throw new Exception("Failed to get timeseries.");
                 }
             }
             catch (Exception ex)

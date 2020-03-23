@@ -36,6 +36,8 @@ namespace Covid.Droid
             Const.CountryEquiv = new CountryEquivalences();
             LoadCountryCodes();
             LoadCountryNames();
+            //@ToDo: review. Loading the whole timeseries on start feels like an overkill. This could be done on demand.
+            LoadTimeseries();
         }
 
         private void LoadCountryNames()
@@ -62,6 +64,21 @@ namespace Covid.Droid
             //It may be faster to cache this in the SharedPreferences:
             //GetSharedPreferences("country_equivalences", FileCreationMode.Private).Edit().PutString("CountryCodeJson", CountryCodeJson).Commit();
             Const.CountryEquiv.NamesCodes = CodeEquivalences;
+        }
+        private void LoadTimeseries()
+        {
+            CountryTimeseriesRoot CountryTimeseries;
+            string TimeseriesJson;
+            using(var Sr = new StreamReader(Assets.Open("timeseries_22_03.json")))
+            {
+                TimeseriesJson = Sr.ReadToEnd();
+                CountryTimeseries = JsonConvert.DeserializeObject<CountryTimeseriesRoot>(TimeseriesJson);
+                //Flag the change ones.
+                var CountryTimeseries2 = JsonConvert.DeserializeObject<Dictionary<string, IEnumerable<CountryTimeseriesDay>>>(TimeseriesJson);
+                var DynamicTimeseries = JsonConvert.DeserializeObject<dynamic>(TimeseriesJson);
+                var SomeResult = DynamicTimeseries["Thailand"];
+            }
+            //Const.Timeseries = CountryTimeseries;
         }
     }
 }

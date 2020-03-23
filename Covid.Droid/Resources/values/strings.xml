@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Coronavirus Tracker</string>
+    <string name="app_name">CoronAppvirus - Coronavirus stats</string>
     <string name="title_home">Mundial</string>
     <string name="title_dashboard">Países</string>
     <string name="title_about">Acerca de Coronavirus App</string>

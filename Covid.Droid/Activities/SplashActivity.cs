@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Util;
 using Android.Widget;
+using Covid.Droid.Helpers;
 using Covid.Lib;
 using Covid.Model;
 using Newtonsoft.Json;
@@ -15,25 +18,60 @@ using NetDebug = System.Diagnostics.Debug;
 
 namespace Covid.Droid.Activities
 {
-    [Activity(Label = "@string/app_name", MainLauncher = true, Theme = "@style/AppTheme.Splash", NoHistory = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "@string/app_name", MainLauncher = false, Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme.Splash", NoHistory = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class SplashActivity : Activity
     {
         ApiConsumer Api;
         ImageView imgSplash;
-        protected override void OnCreate(Bundle savedInstanceState)
+        CovidReport GlobalReport;
+        List<CovidCountryReport> CountriesReport;
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Drawable.splash);
             imgSplash = FindViewById<ImageView>(Resource.Id.imgSplash);
-            RandomAdvice();
+            try
+            {
+                RandomAdvice();
+                InitHttpClient();
+                Task.Run(() => GetData());
+            }
+            catch (Exception ex)
+            {
+                DebugHelper.Error(ex);
+            }
+            
         }
+        void GetData()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (CacheIsRecent())
+            {
+                DebugHelper.Info("Loading from cache.");
+                LoadDataFromCache();
+                GoToMain();
+                return;
+            }
+            DebugHelper.Info("Loading from REST.");
+            GetFromApi();
+        }
+
+        #region Debug stuff.
+        private void MockData()
+        {
+            CountriesReport = new List<CovidCountryReport>();
+            GlobalReport = new CovidReport();
+        }
+        #endregion
+
         void RandomAdvice()
         {
-            int[] Splashes = { 
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            int[] Splashes = {
                 Resource.Drawable.avoid_crowds,
-                Resource.Drawable.wash_hands, 
-                Resource.Drawable.wash_hand_soap, 
-                Resource.Drawable.caugh, 
+                Resource.Drawable.wash_hands,
+                Resource.Drawable.wash_hand_soap,
+                Resource.Drawable.caugh,
                 Resource.Drawable.distance,
                 Resource.Drawable.wash_hands_water,
                 Resource.Drawable.soap_alcohol};
@@ -41,20 +79,9 @@ namespace Covid.Droid.Activities
             int RandomSplashId = Splashes[Rnd.Next(Splashes.Count())];
             imgSplash.SetImageResource(RandomSplashId);
         }
-        protected override void OnResume()
-        {
-            base.OnResume();
-            if (CacheIsRecent())
-            {
-                LoadDataFromCache();
-                GoToMain();
-                return;
-            }
-            Task.Run(() => InitApiConsumer());
-        }
-
         private bool CacheIsRecent()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             var GlobalStamp = GetSharedPreferences("cache", FileCreationMode.Private).GetString("global_timestamp", null);
             var ByCountriesStamp = GetSharedPreferences("cache", FileCreationMode.Private).GetString("by_countries_timestamp", null);
             if (GlobalStamp is null || ByCountriesStamp is null)
@@ -62,52 +89,64 @@ namespace Covid.Droid.Activities
             var ParsedGlobal = DateTime.Parse(GlobalStamp);
             var ParsedByCountries = DateTime.Parse(ByCountriesStamp);
             return LessThanNDaysAgo(ParsedGlobal) && LessThanNDaysAgo(ParsedByCountries);
-
         }
         bool LessThanNDaysAgo(DateTime Date, int n = 1) => (DateTime.Now - Date).TotalDays < n;
 
-        private async Task InitApiConsumer()
+        private async Task GetFromApi()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             InitHttpClient();
+            InitApiConsumer();
+
+            Api.GetDataByCountriesAsync();
+            Api.GetGlobalAsync();
+        }
+        void InitApiConsumer()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             Api = new ApiConsumer();
             var ApiListener = new RestCompletionListener(ApiListener_Success, ApiListener_Failure);
             Api.AddOnSuccessListener(ApiListener);
             Api.AddOnFailureListener(ApiListener);
-            await Api.GetGlobal();
-            await Api.GetDataByCountries();
         }
-        private static void InitHttpClient()
+        void InitHttpClient()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             var Cookies = new CookieContainer();
             var Handler = new HttpClientHandler() { CookieContainer = Cookies };
-            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.Endpoints.FirstOrDefault(x => x.IsWorking("All")) };
+            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.GlobalEndpoints.FirstOrDefault(x => x.IsWorking("All")) };
             Const.GlobalHttpClient.DefaultRequestHeaders.Add("accept", "*/*");
         }
-        CovidReport GlobalReport;
-        List<CovidCountryReport> CountriesReport;
         private void ApiListener_Success(object sender, object CovidResult)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (CovidResult is CovidReport)
             {
                 GlobalReport = (CovidReport)CovidResult;
-                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("global", GlobalReport.ToJson()).Commit();
-                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("global_timestamp", DateTime.Now.ToString()).Commit();
+                SharedPreferencesHandler.SaveGlobalReport(this, GlobalReport);
             }
             else
             {
                 CountriesReport = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
-                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries", CountriesReport.ToJson()).Commit();
-                GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries_timestamp", DateTime.Now.ToString()).Commit();
+                if (HasCachedReport) 
+                {
+                    CountriesReport.LoadFavouritesFromPreferences(this);
+                }
+                SharedPreferencesHandler.SaveCountriesReport(this, CountriesReport);
             }
-            if (AllDone())
+            if (AllDone)
             {
                 GoToMain();
             }
         }
-        bool AllDone() => GlobalReport != null && CountriesReport != null;
+
+        private bool HasCachedReport => SharedPreferencesHandler.GetCountriesReportStamp(this) != null;
+        bool AllDone => GlobalReport != null && CountriesReport != null;
 
         private void GoToMain()
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            CountriesReport = CountriesReport.OrderByDescending(x => x.IsFavourite).ToList();
             var intent = new Intent(this, typeof(MainActivity));
             intent.PutExtra(nameof(GlobalReport), JsonConvert.SerializeObject(GlobalReport));
             intent.PutExtra(nameof(CountriesReport), JsonConvert.SerializeObject(CountriesReport));
@@ -116,6 +155,7 @@ namespace Covid.Droid.Activities
         }
         private void ApiListener_Failure(object sender, Exception e)
         {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
             LoadDataFromCache();
             Toast.MakeText(this, "Hubo un error al actualizar. Usamos la info de la última actualización.", ToastLength.Long).Show();
             GoToMain();
@@ -124,8 +164,9 @@ namespace Covid.Droid.Activities
         {
             try
             {
-                GlobalReport = GetSharedPreferences("cache", FileCreationMode.Private).GetString("global", null).FromJson<CovidReport>();
-                CountriesReport = GetSharedPreferences("cache", FileCreationMode.Private).GetString("by_countries", null).FromJson<List<CovidCountryReport>>();
+                DebugHelper.Method(MethodBase.GetCurrentMethod());
+                GlobalReport = SharedPreferencesHandler.GetCovidReport(this);
+                CountriesReport = SharedPreferencesHandler.GetCountriesReport(this);
             }
             catch (Exception ex)
             {

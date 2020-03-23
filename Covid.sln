@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covid.Droid", "Covid.Droid\Covid.Droid.csproj", "{2DD3C526-35C1-4068-A6A0-A174C0DA5879}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid.Lib", "Covid.Lib\Covid.Lib.csproj", "{5E0E95B0-9AE1-4B72-B5D2-597433DEBEB4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid.Model", "Covid.Model\Covid.Model.csproj", "{958AB3E4-5132-48D0-A37E-BDA2CC70F82E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid.Interfaces", "Covid.Interfaces\Covid.Interfaces.csproj", "{BCF98FFA-E686-482B-8C17-0B24E184B466}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covid.Test", "Covid.Test\Covid.Test.csproj", "{A89C92B2-6626-4D7F-866B-6889CB94BB38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Covid.Test", "Covid.Test\Covid.Test.csproj", "{A89C92B2-6626-4D7F-866B-6889CB94BB38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Covid.Droid", "Covid.Droid\Covid.Droid.csproj", "{2DD3C526-35C1-4068-A6A0-A174C0DA5879}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,12 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{5E0E95B0-9AE1-4B72-B5D2-597433DEBEB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E0E95B0-9AE1-4B72-B5D2-597433DEBEB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E0E95B0-9AE1-4B72-B5D2-597433DEBEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +35,12 @@ Global
 		{A89C92B2-6626-4D7F-866B-6889CB94BB38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A89C92B2-6626-4D7F-866B-6889CB94BB38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A89C92B2-6626-4D7F-866B-6889CB94BB38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DD3C526-35C1-4068-A6A0-A174C0DA5879}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
