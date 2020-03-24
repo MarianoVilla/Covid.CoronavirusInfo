@@ -18,7 +18,7 @@ using NetDebug = System.Diagnostics.Debug;
 
 namespace Covid.Droid.Activities
 {
-    [Activity(Label = "@string/app_name", MainLauncher = false, Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme.Splash", NoHistory = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "@string/app_name", MainLauncher = true, Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme.Splash", NoHistory = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class SplashActivity : Activity
     {
         ApiConsumer Api;
@@ -33,8 +33,7 @@ namespace Covid.Droid.Activities
             try
             {
                 RandomAdvice();
-                InitHttpClient();
-                Task.Run(() => GetData());
+                GetData();
             }
             catch (Exception ex)
             {
@@ -81,14 +80,14 @@ namespace Covid.Droid.Activities
         }
         private bool CacheIsRecent()
         {
+            return false;
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            var GlobalStamp = GetSharedPreferences("cache", FileCreationMode.Private).GetString("global_timestamp", null);
-            var ByCountriesStamp = GetSharedPreferences("cache", FileCreationMode.Private).GetString("by_countries_timestamp", null);
-            if (GlobalStamp is null || ByCountriesStamp is null)
+            var GlobalStamp = SharedPreferencesHandler.GetGlobalReportStamp(this);
+            var ByCountriesStamp = SharedPreferencesHandler.GetCountriesReportStamp(this);
+            var TimeseriesStamp = SharedPreferencesHandler.GetTimeseriesStamp(this);
+            if (GlobalStamp is null || ByCountriesStamp is null || TimeseriesStamp is null)
                 return false;
-            var ParsedGlobal = DateTime.Parse(GlobalStamp);
-            var ParsedByCountries = DateTime.Parse(ByCountriesStamp);
-            return LessThanNDaysAgo(ParsedGlobal) && LessThanNDaysAgo(ParsedByCountries);
+            return LessThanNDaysAgo((DateTime)GlobalStamp) && LessThanNDaysAgo((DateTime)ByCountriesStamp) && LessThanNDaysAgo((DateTime)TimeseriesStamp);
         }
         bool LessThanNDaysAgo(DateTime Date, int n = 1) => (DateTime.Now - Date).TotalDays < n;
 
@@ -100,6 +99,7 @@ namespace Covid.Droid.Activities
 
             Api.GetDataByCountriesAsync();
             Api.GetGlobalAsync();
+            Api.GetTimeseriesAsync();
         }
         void InitApiConsumer()
         {
@@ -108,13 +108,16 @@ namespace Covid.Droid.Activities
             var ApiListener = new RestCompletionListener(ApiListener_Success, ApiListener_Failure);
             Api.AddOnSuccessListener(ApiListener);
             Api.AddOnFailureListener(ApiListener);
+            Api.GlobalEndpoint = Const.GlobalEndpoints.FirstOrDefault(x => x.IsWorking());
+            Api.ByCountriesEndpoint = Const.ByCountriesEndpoints.FirstOrDefault(x => x.IsWorking());
+            Api.TimeseriesEndpoint = Const.TimeseriesEndpoints.FirstOrDefault();
         }
         void InitHttpClient()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             var Cookies = new CookieContainer();
             var Handler = new HttpClientHandler() { CookieContainer = Cookies };
-            Const.GlobalHttpClient = new HttpClient(Handler) { BaseAddress = Const.GlobalEndpoints.FirstOrDefault(x => x.IsWorking("All")) };
+            Const.GlobalHttpClient = new HttpClient(Handler);
             Const.GlobalHttpClient.DefaultRequestHeaders.Add("accept", "*/*");
         }
         private void ApiListener_Success(object sender, object CovidResult)
@@ -125,14 +128,19 @@ namespace Covid.Droid.Activities
                 GlobalReport = (CovidReport)CovidResult;
                 SharedPreferencesHandler.SaveGlobalReport(this, GlobalReport);
             }
-            else
+            else if(CovidResult is IEnumerable<CovidCountryReport>)
             {
                 CountriesReport = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
-                if (HasCachedReport) 
+                if (HasCachedReport)
                 {
                     CountriesReport.LoadFavouritesFromPreferences(this);
                 }
                 SharedPreferencesHandler.SaveCountriesReport(this, CountriesReport);
+            }
+            else if(CovidResult is CountryTimeseriesContainer)
+            {
+                //@ToDo cache the timeseries. It's too big for SharedPreferences. Probably SQLite.
+                //SharedPreferencesHandler.SaveCountryTimeseriesContainer(this, (CountryTimeseriesContainer)CovidResult);
             }
             if (AllDone)
             {
@@ -148,8 +156,8 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             CountriesReport = CountriesReport.OrderByDescending(x => x.IsFavourite).ToList();
             var intent = new Intent(this, typeof(MainActivity));
-            intent.PutExtra(nameof(GlobalReport), JsonConvert.SerializeObject(GlobalReport));
-            intent.PutExtra(nameof(CountriesReport), JsonConvert.SerializeObject(CountriesReport));
+            intent.PutExtra(nameof(GlobalReport), GlobalReport.ToJson());
+            intent.PutExtra(nameof(CountriesReport), CountriesReport.ToJson());
             StartActivity(intent);
             Finish();
         }
@@ -170,7 +178,7 @@ namespace Covid.Droid.Activities
             }
             catch (Exception ex)
             {
-                NetDebug.WriteLine(ex);
+                DebugHelper.Error(ex);
                 Toast.MakeText(this, "Imposible iniciar, vuelva a intentar", ToastLength.Short);
                 Finish();
             }

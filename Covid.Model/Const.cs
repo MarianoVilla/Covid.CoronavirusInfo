@@ -14,7 +14,7 @@ namespace Covid.Model
 
         //@ToDo: review this. The equivalences and the timeseries are not constants, they're global state.
         public static CountryEquivalences CountryEquiv;
-        public static CountryTimeseriesContainer Timeseries { get; set; }
+        public static CountryTimeseriesContainer TimeseriesContainer { get; set; } = new CountryTimeseriesContainer();
 
     }
 }

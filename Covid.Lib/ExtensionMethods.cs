@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -27,24 +28,45 @@ namespace Covid.Lib
                 return false;
             }
         }
+        public static string ToDescriptionString<T>(this T val)
+        {
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])val
+               .GetType()
+               .GetField(val.ToString())
+               .GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : string.Empty;
+        }
         /// <summary>
         /// Loads the regional-friendly names for the countries returned by the APIs (which are in english). Right now, the asset containing the equivalences is a hardcoded JSON with the EN/ES match.
         /// If we need to make the app other-cultures-friendly, we would have to make a dynamic asset. As for now, YAGNI.
         /// </summary>
-        /// <param name="TheCountries"></param>
-        public static void LoadRegionalFriendlyNames(this IEnumerable<CovidCountryReport> TheCountries)
+        /// <param name="Countries"></param>
+        public static void LoadRegionalFriendlyNames(this IEnumerable<CovidCountryReport> Countries)
         {
-            foreach(var c in TheCountries)
+            foreach(var c in Countries)
             {
                 c.RegionalFriendlyName = Const.CountryEquiv.NamesEnEs.FirstOrDefault(x => x.Key == c.Country).Value;
             }
         }
-        public static void LoadCountryCodes(this IEnumerable<CovidCountryReport> TheCountries)
+        public static void LoadCountryCodes(this IEnumerable<CovidCountryReport> Countries)
         {
-            foreach(var c in TheCountries)
+            foreach(var c in Countries)
             {
                 c.CountryCode = Const.CountryEquiv.NamesCodes.FirstOrDefault(x => x.Key == c.Country).Value;
             }
+        }
+        public static void LoadTimeseries(this IEnumerable<CovidCountryReport> Countries)
+        {
+            foreach (var c in Countries)
+            {
+                Const.TimeseriesContainer.Timeseries.TryGetValue(c.Country, out List<CountryTimeseriesDay> Timeseries);
+                c.Timeseries = Timeseries;
+            }
+        }
+        public static void LoadTimeseries(this CovidCountryReport TheCountry)
+        {
+            Const.TimeseriesContainer.Timeseries.TryGetValue(TheCountry.Country, out List<CountryTimeseriesDay> Timeseries);
+            TheCountry.Timeseries = Timeseries;
         }
         public static string ToJson(this object TheObject) => JsonConvert.SerializeObject(TheObject);
         public static T FromJson<T>(this string TheJson) => JsonConvert.DeserializeObject<T>(TheJson);

@@ -15,5 +15,10 @@ namespace Covid.Model
         public int? Active { get; set; }
         public int? Critical { get; set; }
         public int? CasesPerOneMillion { get; set; }
+        /// <summary>
+        /// Some of the APIs provide this nested object. I already have most of the data, but since it's being downloaded anyways, we might as well deserialize it.
+        /// </summary>
+        public CountryInfo CountryInfo { get; set; }
+        public IEnumerable<CountryTimeseriesDay> Timeseries { get; set; }
     }
 }

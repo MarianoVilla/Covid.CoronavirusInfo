@@ -89,6 +89,7 @@
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\SharedPreferencesHandler.cs" />
     <Compile Include="Model\CachedState.cs" />
+    <Compile Include="Model\ChartTypes.cs" />
     <Compile Include="Model\CovidReportAdapter.cs" />
     <Compile Include="Model\CovidViewHolder.cs" />
     <Compile Include="Model\DestroyFragmentEventArgs.cs" />
@@ -99,7 +100,7 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\CountryCodes.json" />
     <AndroidAsset Include="Assets\CountryNames_en_es.json" />
-    <AndroidAsset Include="Assets\timeseries_22_03.json" />
+    <AndroidAsset Include="Assets\timeseries.json" />
     <None Include="Publish\com.marianovilla.coronappvirus.aab" />
     <None Include="Publish\FeatureGraphic.pdn" />
     <None Include="Resources\AboutResources.txt" />
@@ -1133,6 +1134,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Publish\FeatureGraphic.jpg" />
+    <AndroidResource Include="Resources\drawable\chart_board_32.png" />
+    <AndroidResource Include="Resources\drawable\chart_board_48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

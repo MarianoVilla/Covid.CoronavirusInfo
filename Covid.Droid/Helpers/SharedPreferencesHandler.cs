@@ -28,6 +28,11 @@ namespace Covid.Droid.Helpers
             context.GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries", CountriesReport.ToJson()).Commit();
             context.GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("by_countries_timestamp", DateTime.Now.ToString()).Commit();
         }
+        public static void SaveCountryTimeseriesContainer(Context context, CountryTimeseriesContainer CountryTimeseries)
+        {
+            context.GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("timeseries", CountryTimeseries.ToJson()).Commit();
+            context.GetSharedPreferences("cache", FileCreationMode.Private).Edit().PutString("timeseries_timestamp", DateTime.Now.ToString()).Commit();
+        }
         public static List<CovidCountryReport> GetCountriesReport(Context context)
         {
             return context.GetSharedPreferences("cache", FileCreationMode.Private).GetString("by_countries", null).FromJson<List<CovidCountryReport>>();
@@ -46,9 +51,17 @@ namespace Covid.Droid.Helpers
                 return null;
             return DateTime.Parse(GlobalStamp);
         }
+        public static DateTime? GetTimeseriesStamp(Context context)
+        {
+            var TimeseriesStamp = context.GetSharedPreferences("cache", FileCreationMode.Private).GetString("timeseries_timestamp", null);
+            if (TimeseriesStamp is null)
+                return null;
+            return DateTime.Parse(TimeseriesStamp);
+        }
         public static CovidReport GetCovidReport(Context context)
         {
             return context.GetSharedPreferences("cache", FileCreationMode.Private).GetString("global", null).FromJson<CovidReport>();
         }
+        public static void ClearCache(Context context) => context.GetSharedPreferences("cache", FileCreationMode.Private).Edit().Clear().Commit();
     }
 }

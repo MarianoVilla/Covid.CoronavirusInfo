@@ -344,7 +344,7 @@ namespace Covid.Droid.Activities
             this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.DetailsFragment).Commit();
         }
 
-        public void OnTipDismissed(View p0, int p1, bool p2) => DebugHelper.Method(MethodBase.GetCurrentMethod());//@ToDo implement.//throw new NotImplementedException();
+        public void OnTipDismissed(View p0, int p1, bool p2) => DebugHelper.Method(MethodBase.GetCurrentMethod());//@ToDo implement.
     }
 }
 

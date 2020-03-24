@@ -47,7 +47,7 @@ namespace Covid.Droid
             using (var Sr = new StreamReader(Assets.Open("CountryNames_en_es.json")))
             {
                 CountryEnEs = Sr.ReadToEnd();
-                NameEnEsEquivalences = JsonConvert.DeserializeObject<Dictionary<string, string>>(CountryEnEs);
+                NameEnEsEquivalences = CountryEnEs.FromJson<Dictionary<string, string>>();
             }
             Const.CountryEquiv.NamesEnEs = NameEnEsEquivalences;
         }
@@ -59,7 +59,7 @@ namespace Covid.Droid
             using (var Sr = new StreamReader(Assets.Open("CountryCodes.json")))
             {
                 CountryCodeJson = Sr.ReadToEnd();
-                CodeEquivalences = JsonConvert.DeserializeObject<Dictionary<string, string>>(CountryCodeJson);
+                CodeEquivalences = CountryCodeJson.FromJson<Dictionary<string, string>>();
             }
             //It may be faster to cache this in the SharedPreferences:
             //GetSharedPreferences("country_equivalences", FileCreationMode.Private).Edit().PutString("CountryCodeJson", CountryCodeJson).Commit();
@@ -67,18 +67,14 @@ namespace Covid.Droid
         }
         private void LoadTimeseries()
         {
-            CountryTimeseriesRoot CountryTimeseries;
+            CountryTimeseriesContainer CountryTimeseriesContainer;
             string TimeseriesJson;
-            using(var Sr = new StreamReader(Assets.Open("timeseries_22_03.json")))
+            using(var Sr = new StreamReader(Assets.Open("timeseries.json")))
             {
                 TimeseriesJson = Sr.ReadToEnd();
-                CountryTimeseries = JsonConvert.DeserializeObject<CountryTimeseriesRoot>(TimeseriesJson);
-                //Flag the change ones.
-                var CountryTimeseries2 = JsonConvert.DeserializeObject<Dictionary<string, IEnumerable<CountryTimeseriesDay>>>(TimeseriesJson);
-                var DynamicTimeseries = JsonConvert.DeserializeObject<dynamic>(TimeseriesJson);
-                var SomeResult = DynamicTimeseries["Thailand"];
+                var Timeseries = TimeseriesJson.FromJson<Dictionary<string, List<CountryTimeseriesDay>>>();;
+                Const.TimeseriesContainer.Timeseries = Timeseries;
             }
-            //Const.Timeseries = CountryTimeseries;
         }
     }
 }

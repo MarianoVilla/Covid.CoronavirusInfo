@@ -6,8 +6,7 @@ namespace Covid.Model
 {
     public class CountryTimeseriesContainer
     {
-        public string Country { get; set; }
-        //public bool Changed { get; set; }
-        public IEnumerable<CountryTimeseriesDay> TimeseriesDays { get; set; }
+        public bool Changed { get; set; }
+        public Dictionary<string, List<CountryTimeseriesDay>> Timeseries { get; set; }
     }
 }

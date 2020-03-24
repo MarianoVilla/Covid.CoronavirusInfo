@@ -15,9 +15,12 @@ namespace Covid.Lib
         public void AddOnFailureListener(IOnFailureListener Listener) => OnFailureListeners.Add(Listener);
         public void AddOnSuccessListener(IOnSuccessListener Listener) => OnSuccessListeners.Add(Listener);
 
-        public static readonly Uri GlobalEndpoint;
-        public static readonly Uri ByCountriesEndpoint;
-        public static readonly Uri TimeseriesEndpoint;
+        public Uri GlobalEndpoint { get; set; }
+        public Uri ByCountriesEndpoint{  get; set; }
+        /// <summary>
+        /// The endpoint from where we would RESTfully get the timeseries. Not currently being used.
+        /// </summary>
+        public Uri TimeseriesEndpoint { get; set; }
 
         public async Task GetGlobalAsync()
         {
@@ -51,6 +54,7 @@ namespace Covid.Lib
                     var Report = await content.ReadAsAsync<IEnumerable<CovidCountryReport>>();
                     Report.LoadRegionalFriendlyNames();
                     Report.LoadCountryCodes();
+                    //Report.LoadTimeseries();
                     NotifySuccess(Report);
                 }
                 else
@@ -63,7 +67,6 @@ namespace Covid.Lib
                 NotifyFailure(ex);
             }
         }
-        [Obsolete("I ended up downloading the timeseries up to 22/03, then updating it as the days go by.")]
         public async Task GetTimeseriesAsync()
         {
             try
@@ -72,8 +75,8 @@ namespace Covid.Lib
                 if (Res.IsSuccessStatusCode)
                 {
                     using HttpContent content = Res.Content;
-                    var Timeseries = await content.ReadAsAsync<CountryTimeseriesContainer>();
-                    NotifySuccess(Timeseries);
+                    Const.TimeseriesContainer.Timeseries = await content.ReadAsAsync<Dictionary<string, List<CountryTimeseriesDay>>>();
+                    NotifySuccess(Const.TimeseriesContainer);
                 }
                 else
                 {

@@ -16,6 +16,7 @@
         android:layout_centerVertical="true"
         android:id="@+id/txtTitle"
         android:textSize="40dp"
+        android:layout_marginTop="6dp"
         android:textAlignment="center"
         android:text="Global"
         android:background="#10FFFFFF" 
