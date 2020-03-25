@@ -52,6 +52,10 @@ namespace Covid.Droid.Fragments
             InitControls();
             return this.RootView;
         }
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data) 
+        { 
+            base.OnActivityResult(requestCode, resultCode, data); 
+        }
 
         private void InitControls()
         {
@@ -106,8 +110,7 @@ namespace Covid.Droid.Fragments
         {
             var intent = new Intent(btnCountryCharts.Context, typeof(ChartsActivity));
             intent.PutExtra(nameof(Report), Report.ToJson());
-            StartActivity(intent);
-            Activity.Finish();
+            StartActivityForResult(intent, 0);
         }
 
         private void Card_Click(object sender, EventArgs e)
@@ -151,7 +154,7 @@ namespace Covid.Droid.Fragments
             if (FlagId == 0)
                 FlagId = Resource.Drawable.flag_purple;
             Android.Graphics.Drawables.Drawable draw = this.Context.GetDrawable(FlagId);
-            this.txtCountryName.SetCompoundDrawablesWithIntrinsicBounds(null, draw, null, null);
+            this.txtCountryName.SetCompoundDrawablesRelativeWithIntrinsicBounds(null, draw, null, null);
         }
     }
 }

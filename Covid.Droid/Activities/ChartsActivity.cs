@@ -47,6 +47,15 @@ namespace Covid.Droid.Activities
             txtProgressionTitle.Text = $"Progresión para {Report.RegionalFriendlyName ?? Report.Country}";
         }
 
+        public override void OnBackPressed()
+        {
+            var intent = new Intent();
+            intent.PutExtra(nameof(Report), Report.ToJson());
+            SetResult(0, intent);
+            Finish();
+            //base.OnBackPressed();
+        }
+
         private void SpinnerChartType_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             var TheSpinner = sender as Spinner;
@@ -69,7 +78,7 @@ namespace Covid.Droid.Activities
         void SetupCasesChart(int DaysToShow = 5)
         {
             var CasesTimeseries = new List<Entry>();
-            foreach (var day in Report.Timeseries.OrderBy(x => x.Date).TakeLast(DaysToShow))
+            foreach (var day in Report.Timeseries.OrderBy(x => x.Date).Where(x => x.Confirmed != null).TakeLast(DaysToShow))
             {
                 CasesTimeseries.Add(new Entry((float)day.Confirmed)
                 {
@@ -85,7 +94,7 @@ namespace Covid.Droid.Activities
         void SetupDeathsChart(int DaysToShow = 5)
         {
             var DeathTimeseries = new List<Entry>();
-            foreach (var day in Report.Timeseries.OrderBy(x => x.Date).TakeLast(DaysToShow))
+            foreach (var day in Report.Timeseries.OrderBy(x => x.Date).Where(x => x.Deaths != null).TakeLast(DaysToShow))
             {
                 DeathTimeseries.Add(new Entry((float)day.Deaths)
                 {
@@ -101,7 +110,7 @@ namespace Covid.Droid.Activities
         void SetupRecoveredChart(int DaysToShow = 5)
         {
             var RecoveredTimeseries = new List<Entry>();
-            foreach (var day in Report.Timeseries.OrderBy(x => x.Date).TakeLast(DaysToShow))
+            foreach (var day in Report.Timeseries.OrderBy(x => x.Date).Where(x => x.Recovered != null).TakeLast(DaysToShow))
             {
                 RecoveredTimeseries.Add(new Entry((float)day.Recovered)
                 {

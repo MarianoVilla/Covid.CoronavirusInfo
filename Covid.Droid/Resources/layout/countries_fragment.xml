@@ -13,6 +13,7 @@
         android:clickable="true"
         android:layout_below="@id/txtSearchCountry"
         android:scrollbars="vertical"
+        android:textAlignment="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 

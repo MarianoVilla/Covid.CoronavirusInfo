@@ -19,7 +19,7 @@
         android:layout_marginTop="6dp"
         android:textAlignment="center"
         android:text="Global"
-        android:background="#10FFFFFF" 
+        android:background="#10FFFFFF"
         android:drawableBottom="@drawable/world_earth"/>
 
 
@@ -48,16 +48,16 @@
         android:layout_height="fill_parent">
 
 
-            <AutoCompleteTextView
-        android:layout_width="match_parent"
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
             android:layout_margin="6dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/editextrounded"
-        android:id="@+id/txtSearchCountry"
-        android:hint="Buscar"
-        android:inputType="text"
-        android:textAlignment="center"
-        android:imeOptions="actionSearch"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextrounded"
+            android:id="@+id/txtSearchCountry"
+            android:hint="Buscar"
+            android:inputType="text"
+            android:textAlignment="center"
+            android:imeOptions="actionSearch"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewMain"
             android:scrollbars="vertical"

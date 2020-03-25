@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
@@ -19,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using static Com.Tomergoldst.Tooltips.ToolTipsManager;
+using Covid.Lib;
 
 namespace Covid.Droid.Activities
 {
@@ -59,6 +61,13 @@ namespace Covid.Droid.Activities
             SharedPreferencesHandler.SaveCountriesReport(this, this.CountriesReport);
         }
 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data) 
+        {
+            var Report = data.GetStringExtra("Report").FromJson<CovidCountryReport>();
+            CountriesAdapter_ItemClick(this, Report);
+            base.OnActivityResult(requestCode, resultCode, data); 
+
+        }
         void GetBoundleData()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
@@ -257,9 +266,6 @@ namespace Covid.Droid.Activities
             HideDetails();
             ShowInfo();
         }
-
-
-
         private void SwitchToAbout() => throw new NotImplementedException();
         void HideInfo()
         {
@@ -293,7 +299,6 @@ namespace Covid.Droid.Activities
             this.txtTitle.Animate().SetDuration(200).Alpha(1);
             this.txtTitle.Text = Title ?? this.txtTitle.Text;
         }
-
         void HideGlobal()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
@@ -334,16 +339,15 @@ namespace Covid.Droid.Activities
         private void ShowDetails()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.DetailsFragment).Commit();
+            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.DetailsFragment).CommitAllowingStateLoss();
         }
         private void HideDetails()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (this.DetailsFragment.IsHidden)
                 return;
-            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.DetailsFragment).Commit();
+            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.DetailsFragment).CommitAllowingStateLoss();
         }
-
         public void OnTipDismissed(View p0, int p1, bool p2) => DebugHelper.Method(MethodBase.GetCurrentMethod());//@ToDo implement.
     }
 }
