@@ -4,7 +4,7 @@ namespace Covid.Droid.Model
 {
     public enum ChartTypes
     {
-        [Description("Línea")]
+        [Description("Líneas")]
         LineChart,
         [Description("Barras")]
         BarChart,

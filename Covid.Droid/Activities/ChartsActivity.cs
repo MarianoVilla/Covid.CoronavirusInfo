@@ -127,7 +127,7 @@ namespace Covid.Droid.Activities
         {
             switch (SelectedChart)
             {
-                case "Línea": return new LineChart() { Entries = Entries, LineSize = 8, PointSize = 18, LabelTextSize = 18 };
+                case "Líneas": return new LineChart() { Entries = Entries, LineSize = 8, PointSize = 18, LabelTextSize = 18 };
                 case "Barras": return new BarChart() { Entries = Entries, LabelTextSize = 18, PointSize = 18 };
                 case "Puntos": return new PointChart() { Entries = Entries, LabelTextSize = 18, PointSize = 18 };
                 default: throw new NotImplementedException();
