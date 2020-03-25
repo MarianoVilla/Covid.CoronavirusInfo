@@ -1,4 +1,4 @@
-# Covid.CoronavirusInfo
+# CoronAppVirus.
 
 A simple android app to display coronavirus stats.
 
