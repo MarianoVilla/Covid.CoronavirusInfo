@@ -21,6 +21,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using static Com.Tomergoldst.Tooltips.ToolTipsManager;
 using Covid.Lib;
+using Android.Gms.Common;
+using Firebase.Iid;
 
 namespace Covid.Droid.Activities
 {
@@ -51,7 +53,17 @@ namespace Covid.Droid.Activities
 
             GetBoundleData();
             InitControls();
+            InitFirebase();
             LoadBoundleData();
+        }
+        FirebaseHandler FirebaseHandler;
+        void InitFirebase() 
+        {
+            FirebaseHandler = new FirebaseHandler(this);
+            if (!FirebaseHandler.IsPlayServicesAvailable(out string ErrorString))
+                return;
+            FirebaseHandler.CreateNotificationChannel();
+            var Token = FirebaseInstanceId.Instance.Token;
         }
 
         protected override void OnPause()
