@@ -18,8 +18,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="30dp"
-                android:drawableEnd="@drawable/star_empty"
+                android:textSize="30sp"
+                android:drawableRight="@drawable/star_empty"
                 android:id="@+id/txtCountryName"
                 android:textAlignment="center"
                 android:text="Bla"/>
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:textSize="40dp"
+                android:textSize="40sp"
                 android:id="@+id/txtCountryCount"
                 android:text="1000"/>
 

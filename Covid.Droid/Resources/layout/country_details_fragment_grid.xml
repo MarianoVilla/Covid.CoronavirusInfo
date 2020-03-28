@@ -6,57 +6,63 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="10"
-    android:id="@+id/rootView">
+    android:id="@+id/countryDetailsRoot">
 
-    <RelativeLayout
-        android:layout_weight="1.5"
+    <LinearLayout
+        android:layout_weight="2"
         android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:id="@+id/countryDetailsTitleRoot"
         android:layout_height="0dp">
 
-                    <ImageButton
-        android:contentDescription="Volver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        <ImageButton
+            android:contentDescription="Volver"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_alignParentLeft="true"
+                                android:adjustViewBounds="true"
+                    android:scaleType="center"
             android:backgroundTint="@android:color/transparent"
-        android:id="@+id/btnCloseDetails"
-        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+            android:id="@+id/btnCloseDetails"
+            android:src="@drawable/ic_cancel_48" />
 
         <TextView
             android:id="@+id/txtCountryName"
             android:text="País"
-            android:textSize="36sp"
             android:textColor="#000"
-            android:layout_centerInParent="true"
+            android:layout_weight="1"
             android:gravity="center"
+            app:autoSizeTextType="uniform"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
         <ImageButton
             android:contentDescription="Gráficas"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="18dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:scaleType="center"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/chart_board_48"
             android:id="@+id/btnCountryCharts"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <android.support.v7.widget.GridLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:grid="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mainGrid"
         app:rowCount="4"
         app:columnCount="2"
         app:alignmentMode="alignMargins"
         app:columnOrderPreserved="false"
-        android:layout_weight="8.5"
+        android:layout_weight="8"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="14dp">
+        android:layout_height="wrap_content">
         <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -66,8 +72,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:tag="0,0"
             android:contentDescription="Cantidad de casos."
             android:id="@+id/cardCountryCount"
@@ -75,7 +81,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:id="@+id/linearLayout1"
                 android:layout_width="wrap_content"
@@ -83,15 +88,18 @@
 
                 <ImageView
                     android:src="@drawable/number"
+                    android:adjustViewBounds="true"
+                    android:scaleType="center"
                     android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:textAlignment="center"
                     android:text="Text"
                     android:textColor="#000"
                     android:textSize="18sp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     android:id="@+id/txtCountryCount"
                     android:layout_gravity="center"
@@ -111,8 +119,8 @@
             android:layout_marginBottom="16dp"
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
             android:tag="0,1"
@@ -122,7 +130,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -140,6 +147,7 @@
                     android:layout_gravity="center"
                     android:textColor="#000"
                     android:textSize="18sp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
@@ -161,8 +169,8 @@
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             app:cardElevation="8dp"
             android:tag="1,0"
             android:contentDescription="Anunciados hoy."
@@ -171,7 +179,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -188,6 +195,7 @@
                     android:layout_gravity="center"
                     android:textColor="#000"
                     android:textSize="18sp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     android:id="@+id/txtTodayCases"
                     android:layout_width="wrap_content"
@@ -204,8 +212,8 @@
             android:layout_height="0dp"
             app:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -217,7 +225,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -233,6 +240,7 @@
                     android:text="28200595"
                     android:layout_gravity="center"
                     android:textColor="#000"
+                    app:autoSizeTextType="uniform"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:id="@+id/txtTodayDeaths"
@@ -252,8 +260,8 @@
             android:layout_height="0dp"
             app:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -265,7 +273,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -281,6 +288,7 @@
                     android:text="Text"
                     android:textColor="#000"
                     android:textSize="18sp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     android:id="@+id/txtCriticalCases"
@@ -298,8 +306,8 @@
             android:layout_height="0dp"
             app:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -311,7 +319,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -327,6 +334,7 @@
                     android:text="Text2"
                     android:textColor="#000"
                     android:textSize="18sp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
@@ -337,13 +345,13 @@
 
         </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -355,7 +363,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -371,6 +378,7 @@
                     android:text="Text"
                     android:textColor="#000"
                     android:textSize="18sp"
+                    app:autoSizeTextType="uniform"
                     android:textStyle="bold"
                     android:id="@+id/txtRecoveredCases"
                     android:layout_gravity="center"
@@ -387,8 +395,8 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_columnWeight="1"
-                            android:foreground="?android:attr/selectableItemBackground"
-        android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
             android:layout_marginBottom="16dp"
             app:layout_rowWeight="1"
             android:layout_marginLeft="16dp"
@@ -401,7 +409,6 @@
 
             <LinearLayout
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="16dp"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -418,6 +425,7 @@
                     android:textColor="#000"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:autoSizeTextType="uniform"
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
                     android:id="@+id/txtDeathRate"

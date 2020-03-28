@@ -1136,6 +1136,7 @@
     <Content Include="Publish\FeatureGraphic.jpg" />
     <AndroidResource Include="Resources\drawable\chart_board_32.png" />
     <AndroidResource Include="Resources\drawable\chart_board_48.png" />
+    <AndroidResource Include="Resources\drawable\ic_cancel_48.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

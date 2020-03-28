@@ -10,6 +10,8 @@ using Covid.Lib;
 using Covid.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using static Com.Tomergoldst.Tooltips.ToolTipsManager;
 
 namespace Covid.Droid.Fragments
 {
@@ -18,6 +20,7 @@ namespace Covid.Droid.Fragments
         CovidCountryReport Report;
 
         View RootView;
+        LinearLayout LinearRoot;
         TextView txtCountryName;
         TextView txtCountryCount;
         TextView txtTodayCases;
@@ -70,6 +73,7 @@ namespace Covid.Droid.Fragments
             this.txtDeathRate = FindViewById<TextView>(Resource.Id.txtDeathRate);
             this.btnCloseDetails = FindViewById<ImageButton>(Resource.Id.btnCloseDetails);
             this.btnCountryCharts = FindViewById<ImageButton>(Resource.Id.btnCountryCharts);
+            this.LinearRoot = FindViewById<LinearLayout>(Resource.Id.countryDetailsTitleRoot);
 
             this.cardCountryCount = FindViewById<CardView>(Resource.Id.cardCountryCount);
             this.cardTodayCases = FindViewById<CardView>(Resource.Id.cardTodayCases);
@@ -144,6 +148,16 @@ namespace Covid.Droid.Fragments
             this.txtTodayDeaths.Text = Report.TodayDeaths.ToString().TryToLongKMB();
             this.txtDeathRate.Text = Report.DeathRate?.ToString() ?? "N/A";
             ResolveFlagDrawable(Report.CountryCode);
+            //ShowChartsTooltip();
+        }
+        void ShowChartsTooltip()
+        {
+            var Listener = Activity as ITipListener;
+            var ToolTips = new ToolTipsManager();
+            var builder = new ToolTip.Builder(btnCountryCharts.Context, btnCountryCharts, LinearRoot, "¡Nuevo!", ToolTip.PositionBelow);
+            builder.SetAlign(ToolTip.AlignCenter);
+            builder.SetBackgroundColor(Resource.Color.material_grey_50);
+            Task.Delay(2000).ContinueWith((task) => Activity.RunOnUiThread(() => ToolTips.Show(builder.Build())));
         }
 
         void ResolveFlagDrawable(string CountryCode)
