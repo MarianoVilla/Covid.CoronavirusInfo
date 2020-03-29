@@ -1,20 +1,17 @@
-﻿using System;
+﻿using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Widget;
+using Covid.Droid.Helpers;
+using Covid.Lib;
+using Covid.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Util;
-using Android.Widget;
-using Covid.Droid.Helpers;
-using Covid.Lib;
-using Covid.Model;
-using Newtonsoft.Json;
-using NetDebug = System.Diagnostics.Debug;
 
 namespace Covid.Droid.Activities
 {
@@ -29,7 +26,7 @@ namespace Covid.Droid.Activities
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Drawable.splash);
-            imgSplash = FindViewById<ImageView>(Resource.Id.imgSplash);
+            this.imgSplash = FindViewById<ImageView>(Resource.Id.imgSplash);
             try
             {
                 RandomAdvice();
@@ -39,7 +36,7 @@ namespace Covid.Droid.Activities
             {
                 DebugHelper.Error(ex);
             }
-            
+
         }
         void GetData()
         {
@@ -58,8 +55,8 @@ namespace Covid.Droid.Activities
         #region Debug stuff.
         private void MockData()
         {
-            CountriesReport = new List<CovidCountryReport>();
-            GlobalReport = new CovidReport();
+            this.CountriesReport = new List<CovidCountryReport>();
+            this.GlobalReport = new CovidReport();
         }
         #endregion
 
@@ -74,17 +71,17 @@ namespace Covid.Droid.Activities
                 Resource.Drawable.distance,
                 Resource.Drawable.wash_hands_water,
                 Resource.Drawable.soap_alcohol};
-            Random Rnd = new Random();
+            var Rnd = new Random();
             int RandomSplashId = Splashes[Rnd.Next(Splashes.Count())];
-            imgSplash.SetImageResource(RandomSplashId);
+            this.imgSplash.SetImageResource(RandomSplashId);
         }
         private bool CacheIsRecent()
         {
             return false;
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            var GlobalStamp = SharedPreferencesHandler.GetGlobalReportStamp(this);
-            var ByCountriesStamp = SharedPreferencesHandler.GetCountriesReportStamp(this);
-            var TimeseriesStamp = SharedPreferencesHandler.GetTimeseriesStamp(this);
+            DateTime? GlobalStamp = SharedPreferencesHandler.GetGlobalReportStamp(this);
+            DateTime? ByCountriesStamp = SharedPreferencesHandler.GetCountriesReportStamp(this);
+            DateTime? TimeseriesStamp = SharedPreferencesHandler.GetTimeseriesStamp(this);
             if (GlobalStamp is null || ByCountriesStamp is null || TimeseriesStamp is null)
                 return false;
             return LessThanNDaysAgo((DateTime)GlobalStamp) && LessThanNDaysAgo((DateTime)ByCountriesStamp) && LessThanNDaysAgo((DateTime)TimeseriesStamp);
@@ -97,20 +94,20 @@ namespace Covid.Droid.Activities
             InitHttpClient();
             InitApiConsumer();
 
-            Api.GetDataByCountriesAsync();
-            Api.GetGlobalAsync();
-            Api.GetTimeseriesAsync();
+            this.Api.GetDataByCountriesAsync();
+            this.Api.GetGlobalAsync();
+            this.Api.GetTimeseriesAsync();
         }
         void InitApiConsumer()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            Api = new ApiConsumer();
+            this.Api = new ApiConsumer();
             var ApiListener = new RestCompletionListener(ApiListener_Success, ApiListener_Failure);
-            Api.AddOnSuccessListener(ApiListener);
-            Api.AddOnFailureListener(ApiListener);
-            Api.GlobalEndpoint = Const.GlobalEndpoints.FirstOrDefault(x => x.IsWorking());
-            Api.ByCountriesEndpoint = Const.ByCountriesEndpoints.FirstOrDefault(x => x.IsWorking());
-            Api.TimeseriesEndpoint = Const.TimeseriesEndpoints.FirstOrDefault();
+            this.Api.AddOnSuccessListener(ApiListener);
+            this.Api.AddOnFailureListener(ApiListener);
+            this.Api.GlobalEndpoint = Const.GlobalEndpoints.FirstOrDefault(x => x.IsWorking());
+            this.Api.ByCountriesEndpoint = Const.ByCountriesEndpoints.FirstOrDefault(x => x.IsWorking());
+            this.Api.TimeseriesEndpoint = Const.TimeseriesEndpoints.FirstOrDefault();
         }
         void InitHttpClient()
         {
@@ -125,39 +122,39 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (CovidResult is CovidReport)
             {
-                GlobalReport = (CovidReport)CovidResult;
-                SharedPreferencesHandler.SaveGlobalReport(this, GlobalReport);
+                this.GlobalReport = (CovidReport)CovidResult;
+                SharedPreferencesHandler.SaveGlobalReport(this, this.GlobalReport);
             }
-            else if(CovidResult is IEnumerable<CovidCountryReport>)
+            else if (CovidResult is IEnumerable<CovidCountryReport>)
             {
-                CountriesReport = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
-                if (HasCachedReport)
+                this.CountriesReport = ((IEnumerable<CovidCountryReport>)CovidResult).ToList();
+                if (this.HasCachedReport)
                 {
-                    CountriesReport.LoadFavouritesFromPreferences(this);
+                    this.CountriesReport.LoadFavouritesFromPreferences(this);
                 }
-                SharedPreferencesHandler.SaveCountriesReport(this, CountriesReport);
+                SharedPreferencesHandler.SaveCountriesReport(this, this.CountriesReport);
             }
-            else if(CovidResult is CountryTimeseriesContainer)
+            else if (CovidResult is CountryTimeseriesContainer)
             {
                 //@ToDo cache the timeseries. It's too big for SharedPreferences. Probably SQLite.
                 //SharedPreferencesHandler.SaveCountryTimeseriesContainer(this, (CountryTimeseriesContainer)CovidResult);
             }
-            if (AllDone)
+            if (this.AllDone)
             {
                 GoToMain();
             }
         }
 
         private bool HasCachedReport => SharedPreferencesHandler.GetCountriesReportStamp(this) != null;
-        bool AllDone => GlobalReport != null && CountriesReport != null;
+        bool AllDone => this.GlobalReport != null && this.CountriesReport != null;
 
         private void GoToMain()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            CountriesReport = CountriesReport.OrderByDescending(x => x.IsFavourite).ToList();
+            this.CountriesReport = this.CountriesReport.OrderByDescending(x => x.IsFavourite).ToList();
             var intent = new Intent(this, typeof(MainActivity));
-            intent.PutExtra(nameof(GlobalReport), GlobalReport.ToJson());
-            intent.PutExtra(nameof(CountriesReport), CountriesReport.ToJson());
+            intent.PutExtra(nameof(this.GlobalReport), this.GlobalReport.ToJson());
+            intent.PutExtra(nameof(this.CountriesReport), this.CountriesReport.ToJson());
             StartActivity(intent);
             Finish();
         }
@@ -173,8 +170,8 @@ namespace Covid.Droid.Activities
             try
             {
                 DebugHelper.Method(MethodBase.GetCurrentMethod());
-                GlobalReport = SharedPreferencesHandler.GetCovidReport(this);
-                CountriesReport = SharedPreferencesHandler.GetCountriesReport(this);
+                this.GlobalReport = SharedPreferencesHandler.GetCovidReport(this);
+                this.CountriesReport = SharedPreferencesHandler.GetCountriesReport(this);
             }
             catch (Exception ex)
             {

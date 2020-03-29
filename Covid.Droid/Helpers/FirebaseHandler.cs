@@ -1,33 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 using Android.App;
 using Android.Content;
 using Android.Gms.Common;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 
 namespace Covid.Droid.Helpers
 {
     public class FirebaseHandler
     {
         readonly Context context;
-        public FirebaseHandler(Context context)
-        {
-            this.context = context;
-        }
+        public FirebaseHandler(Context context) => this.context = context;
         public bool IsPlayServicesAvailable(out string ErrorString)
         {
             ErrorString = null;
-            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(context);
+            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this.context);
             if (resultCode != ConnectionResult.Success)
             {
                 if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
+                {
                     ErrorString = GoogleApiAvailability.Instance.GetErrorString(resultCode);
+                }
                 else
                 {
                     ErrorString = "This device is not supported";
@@ -61,7 +53,7 @@ namespace Covid.Droid.Helpers
 
                 Description = "Firebase Cloud Messages appear in this channel"
             };
-            var notificationManager = (NotificationManager)context.GetSystemService(Android.Content.Context.NotificationService);
+            var notificationManager = (NotificationManager)this.context.GetSystemService(Android.Content.Context.NotificationService);
             notificationManager.CreateNotificationChannel(channel);
         }
     }

@@ -55,10 +55,7 @@ namespace Covid.Droid.Fragments
             InitControls();
             return this.RootView;
         }
-        public override void OnActivityResult(int requestCode, int resultCode, Intent data) 
-        { 
-            base.OnActivityResult(requestCode, resultCode, data); 
-        }
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data) => base.OnActivityResult(requestCode, resultCode, data);
 
         private void InitControls()
         {
@@ -102,18 +99,18 @@ namespace Covid.Droid.Fragments
         void BtnCountryCharts_Click(object sender, EventArgs e)
         {
             var Btn = sender as ImageButton;
-            Report.LoadTimeseries();
-            if (Report.Timeseries is null)
+            this.Report.LoadTimeseries();
+            if (this.Report.Timeseries is null)
             {
-                Toast.MakeText(Btn.Context, "Información no disponible.", ToastLength.Short);
+                Toast.MakeText(Btn.Context, "Información no disponible.", ToastLength.Short).Show();
                 return;
             }
             GoToCharts();
         }
         void GoToCharts()
         {
-            var intent = new Intent(btnCountryCharts.Context, typeof(ChartsActivity));
-            intent.PutExtra(nameof(Report), Report.ToJson());
+            var intent = new Intent(this.btnCountryCharts.Context, typeof(ChartsActivity));
+            intent.PutExtra(nameof(this.Report), this.Report.ToJson());
             StartActivityForResult(intent, 0);
         }
 
@@ -152,12 +149,12 @@ namespace Covid.Droid.Fragments
         }
         void ShowChartsTooltip()
         {
-            var Listener = Activity as ITipListener;
+            var Listener = this.Activity as ITipListener;
             var ToolTips = new ToolTipsManager();
-            var builder = new ToolTip.Builder(btnCountryCharts.Context, btnCountryCharts, LinearRoot, "¡Nuevo!", ToolTip.PositionBelow);
+            var builder = new ToolTip.Builder(this.btnCountryCharts.Context, this.btnCountryCharts, this.LinearRoot, "¡Nuevo!", ToolTip.PositionBelow);
             builder.SetAlign(ToolTip.AlignCenter);
             builder.SetBackgroundColor(Resource.Color.material_grey_50);
-            Task.Delay(2000).ContinueWith((task) => Activity.RunOnUiThread(() => ToolTips.Show(builder.Build())));
+            Task.Delay(2000).ContinueWith((task) => this.Activity.RunOnUiThread(() => ToolTips.Show(builder.Build())));
         }
 
         void ResolveFlagDrawable(string CountryCode)

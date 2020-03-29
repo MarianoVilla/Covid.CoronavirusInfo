@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.OS;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Covid.Model;
 using Covid.Lib;
-using Android.Support.V7.Widget;
-using Android.Support.Design.Animation;
-using System.Threading.Tasks;
-using Covid.Droid.Helpers;
+using Covid.Model;
+using System;
 
 namespace Covid.Droid.Fragments
 {
@@ -27,33 +17,29 @@ namespace Covid.Droid.Fragments
         CardView cardGlobalCases;
         CardView cardGlobalDeaths;
         CardView cardGlobalRecovered;
-        public override void OnCreate(Bundle savedInstanceState)
-        {
-            base.OnCreate(savedInstanceState);
-        }
+        public override void OnCreate(Bundle savedInstanceState) => base.OnCreate(savedInstanceState);
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            RootView = inflater.Inflate(Resource.Layout.global_data, container, false);
-            RootView.Visibility = ViewStates.Visible;
+            this.RootView = inflater.Inflate(Resource.Layout.global_data, container, false);
+            this.RootView.Visibility = ViewStates.Visible;
             InitControls();
-            return RootView;
+            return this.RootView;
         }
 
         private void InitControls()
         {
-            this.txtGlobalCases = RootView.FindViewById<TextView>(Resource.Id.txtGlobalCases);
-            this.txtGlobalDeaths = RootView.FindViewById<TextView>(Resource.Id.txtGlobalDeaths);
-            this.txtGlobalRecovered = RootView.FindViewById<TextView>(Resource.Id.txtGlobalRecovered);
-            this.cardGlobalCases = RootView.FindViewById<CardView>(Resource.Id.cardGlobalCases);
-            this.cardGlobalDeaths = RootView.FindViewById<CardView>(Resource.Id.cardGlobalDeaths);
-            this.cardGlobalRecovered = RootView.FindViewById<CardView>(Resource.Id.cardGlobalRecovered);
+            this.txtGlobalCases = this.RootView.FindViewById<TextView>(Resource.Id.txtGlobalCases);
+            this.txtGlobalDeaths = this.RootView.FindViewById<TextView>(Resource.Id.txtGlobalDeaths);
+            this.txtGlobalRecovered = this.RootView.FindViewById<TextView>(Resource.Id.txtGlobalRecovered);
+            this.cardGlobalCases = this.RootView.FindViewById<CardView>(Resource.Id.cardGlobalCases);
+            this.cardGlobalDeaths = this.RootView.FindViewById<CardView>(Resource.Id.cardGlobalDeaths);
+            this.cardGlobalRecovered = this.RootView.FindViewById<CardView>(Resource.Id.cardGlobalRecovered);
 
             this.cardGlobalCases.Click += CardGlobalCases_Click; ;
             this.cardGlobalDeaths.Click += CardGlobalCases_Click;
             this.cardGlobalRecovered.Click += CardGlobalCases_Click;
         }
-        //@ToDo countries searchbar.
-        //bool Animating;
+        //@ToDo: add a tooltip to the GlobalData cards.
         private void CardGlobalCases_Click(object sender, EventArgs e)
         {
             //if(Animating)
@@ -65,9 +51,9 @@ namespace Covid.Droid.Fragments
 
         public void Update(CovidReport Report)
         {
-            txtGlobalCases.Text = Report.Cases.ToKMB();
-            txtGlobalDeaths.Text = Report.Deaths.ToKMB();
-            txtGlobalRecovered.Text = Report.Recovered.ToKMB();
+            this.txtGlobalCases.Text = Report.Cases.ToKMB();
+            this.txtGlobalDeaths.Text = Report.Deaths.ToKMB();
+            this.txtGlobalRecovered.Text = Report.Recovered.ToKMB();
         }
 
     }

@@ -53,7 +53,6 @@ namespace Covid.Droid.Activities
             intent.PutExtra(nameof(Report), Report.ToJson());
             SetResult(0, intent);
             Finish();
-            //base.OnBackPressed();
         }
 
         private void SpinnerChartType_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)

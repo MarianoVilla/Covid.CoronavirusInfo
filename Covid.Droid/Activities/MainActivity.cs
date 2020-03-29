@@ -6,13 +6,16 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Com.Tomergoldst.Tooltips;
 using Covid.Droid.Fragments;
 using Covid.Droid.Helpers;
 using Covid.Droid.Model;
+using Covid.Lib;
 using Covid.Model;
+using Firebase.Iid;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,13 +23,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using static Com.Tomergoldst.Tooltips.ToolTipsManager;
-using Covid.Lib;
-using Android.Gms.Common;
-using Firebase.Iid;
 
 namespace Covid.Droid.Activities
 {
-    
+
     [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme", MainLauncher = false)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener, ITipListener
     {
@@ -43,27 +43,30 @@ namespace Covid.Droid.Activities
         ViewGroup RootView;
         AutoCompleteTextView txtSearchCountry;
 
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
+            Log.Debug(this.Tag, "google app id: " + GetString(Resource.String.google_app_id));
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
             GetBoundleData();
             InitControls();
-            InitFirebase();
+            //InitFirebase();
             LoadBoundleData();
         }
+        //@ToDo: push stuff.
+        string Tag = "CovidToken";
         FirebaseHandler FirebaseHandler;
-        void InitFirebase() 
+        void InitFirebase()
         {
-            FirebaseHandler = new FirebaseHandler(this);
-            if (!FirebaseHandler.IsPlayServicesAvailable(out string ErrorString))
+            this.FirebaseHandler = new FirebaseHandler(this);
+            if (!this.FirebaseHandler.IsPlayServicesAvailable(out string ErrorString))
                 return;
-            FirebaseHandler.CreateNotificationChannel();
-            var Token = FirebaseInstanceId.Instance.Token;
+            this.FirebaseHandler.CreateNotificationChannel();
+            string Token = FirebaseInstanceId.Instance.Token;
+            Log.Debug(this.Tag, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
         }
 
         protected override void OnPause()
@@ -73,11 +76,11 @@ namespace Covid.Droid.Activities
             SharedPreferencesHandler.SaveCountriesReport(this, this.CountriesReport);
         }
 
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data) 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            var Report = data.GetStringExtra("Report").FromJson<CovidCountryReport>();
+            CovidCountryReport Report = data.GetStringExtra("Report").FromJson<CovidCountryReport>();
             CountriesAdapter_ItemClick(this, Report);
-            base.OnActivityResult(requestCode, resultCode, data); 
+            base.OnActivityResult(requestCode, resultCode, data);
 
         }
         void GetBoundleData()

@@ -65,8 +65,22 @@ namespace Covid.Lib
         }
         public static void LoadTimeseries(this CovidCountryReport TheCountry)
         {
-            Const.TimeseriesContainer.Timeseries.TryGetValue(TheCountry.Country, out List<CountryTimeseriesDay> Timeseries);
+            Const.TimeseriesContainer.Timeseries.TryGetValueMulti(out List<CountryTimeseriesDay> Timeseries, TheCountry.Country, TheCountry.RegionalFriendlyName, TheCountry.CountryCode);
             TheCountry.Timeseries = Timeseries;
+        }
+        public static bool TryGetValueMulti<T>(this Dictionary<string, T> TheDictionary, out T TheValue, params string[] Keys) where T : class
+        {
+            TheValue = null;
+            foreach(var k in Keys)
+            {
+                T Value;
+                if (TheDictionary.TryGetValue(k, out Value) || TheDictionary.TryGetValue(k.ToLower(), out Value) || TheDictionary.TryGetValue(k.ToUpper(), out Value))
+                {
+                    TheValue = Value;
+                    return true;
+                }
+            }
+            return false;
         }
         public static string ToJson(this object TheObject) => JsonConvert.SerializeObject(TheObject);
         public static T FromJson<T>(this string TheJson) => JsonConvert.DeserializeObject<T>(TheJson);

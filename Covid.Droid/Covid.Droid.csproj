@@ -85,10 +85,9 @@
     <Compile Include="Helpers\AnimationHandler.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Helpers\DebugHelper.cs" />
-    <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\FirebaseHandler.cs" />
-    <Compile Include="Helpers\FirebaseIIdService.cs" />
+    <Compile Include="Helpers\MyFirebaseMessagingService.cs" />
     <Compile Include="Helpers\SharedPreferencesHandler.cs" />
     <Compile Include="Model\CachedState.cs" />
     <Compile Include="Model\ChartTypes.cs" />
@@ -103,7 +102,7 @@
     <AndroidAsset Include="Assets\CountryCodes.json" />
     <AndroidAsset Include="Assets\CountryNames_en_es.json" />
     <AndroidAsset Include="Assets\timeseries.json" />
-    <GoogleServicesJson Include="coronappvirus_google-services.json" />
+    <GoogleServicesJson Include="google-services.json" />
     <None Include="Publish\com.marianovilla.coronappvirus.aab" />
     <None Include="Publish\FeatureGraphic.pdn" />
     <None Include="Resources\AboutResources.txt" />
