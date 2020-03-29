@@ -159,11 +159,9 @@ namespace Covid.Droid.Fragments
 
         void ResolveFlagDrawable(string CountryCode)
         {
-            if (CountryCode is null)
-                return;
-            int FlagId = this.Resources.GetIdentifier(CountryCode.ToLower(), nameof(Resource.Drawable).ToLower(), this.Activity.PackageName);
+            int FlagId = this.Resources.GetIdentifier(CountryCode?.ToLower() ?? "", nameof(Resource.Drawable).ToLower(), this.Activity.PackageName);
             if (FlagId == 0)
-                FlagId = Resource.Drawable.flag_purple;
+                FlagId = Resource.Drawable.flag_unknown;
             Android.Graphics.Drawables.Drawable draw = this.Context.GetDrawable(FlagId);
             this.txtCountryName.SetCompoundDrawablesRelativeWithIntrinsicBounds(null, draw, null, null);
         }

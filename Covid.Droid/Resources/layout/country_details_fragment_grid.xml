@@ -30,13 +30,16 @@
 
         <TextView
             android:id="@+id/txtCountryName"
-            android:text="País"
+            android:text="BlaBlaBlaBlaBlaBlaBlaBlaBla"
             android:textColor="#000"
             android:layout_weight="1"
             android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="22sp"
+            android:layout_gravity="center"
             app:autoSizeTextType="uniform"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
         <ImageButton
             android:contentDescription="Gráficas"
             android:layout_width="wrap_content"
@@ -44,6 +47,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="center"
+            android:layout_marginRight="6dp"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/chart_board_48"
             android:id="@+id/btnCountryCharts"/>

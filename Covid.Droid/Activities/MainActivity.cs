@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using static Android.Support.V7.Widget.RecyclerView;
 using static Com.Tomergoldst.Tooltips.ToolTipsManager;
 
 namespace Covid.Droid.Activities
@@ -42,6 +43,7 @@ namespace Covid.Droid.Activities
         List<CovidCountryReport> CountriesReport;
         ViewGroup RootView;
         AutoCompleteTextView txtSearchCountry;
+        FloatingActionButton btnBackToTop;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -111,8 +113,14 @@ namespace Covid.Droid.Activities
             InitInfoFragment();
             InitDetailsFragment();
             InitTxtSearchCountries();
+            InitFab();
 
             this.ToolTips = new ToolTipsManager(this);
+        }
+        void InitFab()
+        {
+            this.btnBackToTop = FindViewById<FloatingActionButton>(Resource.Id.fabBackToTop);
+            this.btnBackToTop.Click += (s, e) => this.mRecyclerView.SmoothScrollToPosition(0);
         }
 
         private void InitInfoFragment()
@@ -271,6 +279,7 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideInfo();
             HideGlobal();
+            HideDetails();
             ShowByCountries();
         }
         void SwitchToInfo()
@@ -335,6 +344,7 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             this.recyclerLayout.Animate().SetDuration(200).Alpha(0);
             this.recyclerLayout.Visibility = ViewStates.Invisible;
+            this.btnBackToTop.Visibility = ViewStates.Invisible;
             HideDetails();
         }
         void ShowByCountries()
@@ -344,6 +354,7 @@ namespace Covid.Droid.Activities
             SetTitleDrawable(Resource.Drawable.country_icon);
             this.recyclerLayout.Animate().SetDuration(300).Alpha(1);
             this.recyclerLayout.Visibility = ViewStates.Visible;
+            this.btnBackToTop.Visibility = ViewStates.Visible;
         }
         void SetTitleDrawable(int TheDrawableId)
         {

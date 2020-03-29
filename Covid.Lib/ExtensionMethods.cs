@@ -65,18 +65,31 @@ namespace Covid.Lib
         }
         public static void LoadTimeseries(this CovidCountryReport TheCountry)
         {
-            Const.TimeseriesContainer.Timeseries.TryGetValueMulti(out List<CountryTimeseriesDay> Timeseries, TheCountry.Country, TheCountry.RegionalFriendlyName, TheCountry.CountryCode);
+            Const.TimeseriesContainer.Timeseries.TryGetValueMultiKey(out List<CountryTimeseriesDay> Timeseries, TheCountry.Country, TheCountry.RegionalFriendlyName, TheCountry.CountryCode);
             TheCountry.Timeseries = Timeseries;
         }
-        public static bool TryGetValueMulti<T>(this Dictionary<string, T> TheDictionary, out T TheValue, params string[] Keys) where T : class
+        public static bool TryGetValueMultiKey<T>(this Dictionary<string, T> TheDictionary, out T TheValue, params string[] Keys) where T : class
         {
             TheValue = null;
-            foreach(var k in Keys)
+            if (Keys is null)
+                return false;
+            foreach (var k in Keys)
             {
-                T Value;
-                if (TheDictionary.TryGetValue(k, out Value) || TheDictionary.TryGetValue(k.ToLower(), out Value) || TheDictionary.TryGetValue(k.ToUpper(), out Value))
+                if (TheDictionary.TryGetValueCaseInsensitive(out TheValue, k))
+                    return true;
+            }
+            return false;
+        }
+        public static bool TryGetValueCaseInsensitive<T>(this Dictionary<string, T> TheDictionary, out T TheValue, string Key) where T : class
+        {
+            TheValue = null;
+            if (Key is null)
+                return false;
+            foreach (var dk in TheDictionary.Keys)
+            {
+                if (Key.ToLower() == dk.ToLower())
                 {
-                    TheValue = Value;
+                    TheValue = TheDictionary[dk];
                     return true;
                 }
             }
@@ -140,24 +153,7 @@ namespace Covid.Lib
         }
         public static string ToKMB(this int num)
         {
-            if (num > 999999999 || num < -999999999)
-            {
-                return num.ToString("0,,,.###B", CultureInfo.InvariantCulture);
-            }
-            else
-            if (num > 999999 || num < -999999)
-            {
-                return num.ToString("0,,.##M", CultureInfo.InvariantCulture);
-            }
-            else
-            if (num > 999 || num < -999)
-            {
-                return num.ToString("0,.#K", CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                return num.ToString(CultureInfo.InvariantCulture);
-            }
+            return ((long)num).ToKMB();
         }
         public static string ToKMB(this int? num)
         {
