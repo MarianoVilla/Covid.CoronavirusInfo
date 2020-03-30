@@ -11,6 +11,7 @@ namespace Covid.Droid
     [Application]
     public class App : Application
     {
+        ///
         protected App(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
