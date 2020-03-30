@@ -28,7 +28,7 @@ namespace Covid.Droid
             LoadCountryCodes();
             LoadCountryNames();
         }
-
+        //
         private void LoadCountryNames()
         {
             Dictionary<string, string> NameEnEsEquivalences;
