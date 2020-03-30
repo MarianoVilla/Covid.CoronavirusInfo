@@ -97,7 +97,7 @@ namespace Covid.Lib
         }
         public static string ToJson(this object TheObject) => JsonConvert.SerializeObject(TheObject);
         public static T FromJson<T>(this string TheJson) => JsonConvert.DeserializeObject<T>(TheJson);
-
+        public static T FromJsonIntoAnonymous<T>(this string TheJson) where T : new() => JsonConvert.DeserializeAnonymousType(TheJson, new T());
         public static string ToKMB(this decimal num)
         {
             if (num > 999999999 || num < -999999999)
