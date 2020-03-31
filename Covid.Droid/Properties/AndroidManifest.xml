@@ -10,7 +10,7 @@
 				<category android:name="${applicationId}" />
 			</intent-filter>
 		</receiver>
-		<service android:name=".MyFirebaseMessagingService" android:stopWithTask="false">
+		<service android:name="MyFirebaseMessagingService" android:stopWithTask="false">
 			<intent-filter>
 				<action android:name="com.google.firebase.MESSAGING_EVENT" />
 			</intent-filter>

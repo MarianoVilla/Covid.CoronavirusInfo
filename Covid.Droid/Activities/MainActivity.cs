@@ -55,7 +55,7 @@ namespace Covid.Droid.Activities
 
             GetBoundleData();
             InitControls();
-            //InitFirebase();
+            InitFirebase();
             LoadBoundleData();
         }
         //@ToDo: push stuff.
