@@ -22,7 +22,8 @@ namespace Covid.Droid.Activities
     public class ChartsActivity : Activity
     {
         CovidCountryReport Report;
-        string SelectedChart = ChartTypes.LineChart.ToDescriptionString();
+        int SelectedChartIndex = 0;
+        string[] ChartTypesArray;
 
         Spinner howManyDaysSpinner;
         Spinner spinnerChartType;
@@ -32,10 +33,10 @@ namespace Covid.Droid.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.charts_view);
             this.Report = Intent.GetStringExtra(nameof(Report)).FromJson<CovidCountryReport>();
+            ChartTypesArray = Resources.GetStringArray(Resource.Array.chart_types);
 
             spinnerChartType = FindViewById<Spinner>(Resource.Id.spinnerChartType);
-            spinnerChartType.Adapter = new ArrayAdapter<string>(this, Resource.Layout.list_item, 
-                new[] { ChartTypes.LineChart.ToDescriptionString(), ChartTypes.BarChart.ToDescriptionString(), ChartTypes.PointChart.ToDescriptionString() });
+            spinnerChartType.Adapter = new ArrayAdapter<string>(this, Resource.Layout.list_item, ChartTypesArray);
             spinnerChartType.ItemSelected += SpinnerChartType_ItemSelected;
 
 
@@ -44,7 +45,7 @@ namespace Covid.Droid.Activities
             howManyDaysSpinner.ItemSelected += HowManyDaysSpinner_ItemSelected;
 
             txtProgressionTitle = FindViewById<TextView>(Resource.Id.txtProgressionTitle);
-            txtProgressionTitle.Text = $"Progresión para {Report.RegionalFriendlyName ?? Report.Country}";
+            txtProgressionTitle.Text = $"{Resources.GetString(Resource.String.progressions)} {Report.RegionalFriendlyName ?? Report.Country}";
         }
 
         public override void OnBackPressed()
@@ -58,7 +59,7 @@ namespace Covid.Droid.Activities
         private void SpinnerChartType_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             var TheSpinner = sender as Spinner;
-            SelectedChart = (string)TheSpinner.Adapter.GetItem(e.Position);
+            SelectedChartIndex = e.Position;
             SetupCharts((int)howManyDaysSpinner.SelectedItem);
         }
 
@@ -124,11 +125,11 @@ namespace Covid.Droid.Activities
         }
         Chart GetChart(IEnumerable<Entry> Entries)
         {
-            switch (SelectedChart)
+            switch (SelectedChartIndex)
             {
-                case "Líneas": return new LineChart() { Entries = Entries, LineSize = 8, PointSize = 18, LabelTextSize = 18 };
-                case "Barras": return new BarChart() { Entries = Entries, LabelTextSize = 18, PointSize = 18 };
-                case "Puntos": return new PointChart() { Entries = Entries, LabelTextSize = 18, PointSize = 18 };
+                case 0: return new LineChart() { Entries = Entries, LineSize = 8, PointSize = 18, LabelTextSize = 18 };
+                case 1: return new BarChart() { Entries = Entries, LabelTextSize = 18, PointSize = 18 };
+                case 2: return new PointChart() { Entries = Entries, LabelTextSize = 18, PointSize = 18 };
                 default: throw new NotImplementedException();
             }
         }

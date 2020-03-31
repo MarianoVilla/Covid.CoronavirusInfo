@@ -43,9 +43,11 @@ namespace Covid.Lib
         /// <param name="Countries"></param>
         public static void LoadRegionalFriendlyNames(this IEnumerable<CovidCountryReport> Countries)
         {
+            if (Const.CountryEquiv.NamesEnToLocale == null || !Const.CountryEquiv.NamesEnToLocale.Any())
+                return;
             foreach(var c in Countries)
             {
-                c.RegionalFriendlyName = Const.CountryEquiv.NamesEnEs.FirstOrDefault(x => x.Key == c.Country).Value;
+                c.RegionalFriendlyName = Const.CountryEquiv.NamesEnToLocale.FirstOrDefault(x => x.Key == c.Country).Value;
             }
         }
         public static void LoadCountryCodes(this IEnumerable<CovidCountryReport> Countries)

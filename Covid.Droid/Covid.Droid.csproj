@@ -1174,6 +1174,9 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\distance_alt.png" />
+    <AndroidResource Include="Resources\drawable\wash_hands_water_alt.png" />
+    <AndroidResource Include="Resources\drawable\soap.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

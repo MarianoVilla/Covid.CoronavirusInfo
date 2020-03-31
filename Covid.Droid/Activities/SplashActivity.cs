@@ -69,8 +69,11 @@ namespace Covid.Droid.Activities
                 Resource.Drawable.wash_hand_soap,
                 Resource.Drawable.caugh,
                 Resource.Drawable.distance,
+                Resource.Drawable.distance_alt,
+                Resource.Drawable.wash_hands_water_alt,
                 Resource.Drawable.wash_hands_water,
-                Resource.Drawable.soap_alcohol};
+                Resource.Drawable.soap_alcohol,
+                Resource.Drawable.soap};
             var Rnd = new Random();
             int RandomSplashId = Splashes[Rnd.Next(Splashes.Count())];
             this.imgSplash.SetImageResource(RandomSplashId);
@@ -162,7 +165,7 @@ namespace Covid.Droid.Activities
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             LoadDataFromCache();
-            Toast.MakeText(this, "Hubo un error al actualizar. Usamos la info de la última actualización.", ToastLength.Long).Show();
+            Toast.MakeText(this, Resources.GetString(Resource.String.update_error), ToastLength.Long).Show();
             GoToMain();
         }
         void LoadDataFromCache()
@@ -176,7 +179,7 @@ namespace Covid.Droid.Activities
             catch (Exception ex)
             {
                 DebugHelper.Error(ex);
-                Toast.MakeText(this, "Imposible iniciar, vuelva a intentar", ToastLength.Short);
+                Toast.MakeText(this, Resources.GetString(Resource.String.impossible_to_start), ToastLength.Short);
                 Finish();
             }
         }

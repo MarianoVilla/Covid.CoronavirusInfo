@@ -39,8 +39,7 @@
                 android:layout_gravity="center"
                 app:autoSizeTextType="uniform"
                 android:textSize="40sp"
-                android:id="@+id/txtGlobalCases"
-                android:text="0"/>
+                android:id="@+id/txtGlobalCases"/>
 
         </LinearLayout>
 
@@ -77,8 +76,7 @@
                 android:layout_gravity="center"
                 app:autoSizeTextType="uniform"
                 android:textSize="40sp"
-                android:id="@+id/txtGlobalDeaths"
-                android:text="0"/>
+                android:id="@+id/txtGlobalDeaths"/>
 
         </LinearLayout>
 
@@ -116,8 +114,7 @@
                 android:layout_gravity="center"
                 app:autoSizeTextType="uniform"
                 android:textSize="40sp"
-                android:id="@+id/txtGlobalRecovered"
-                android:text="0"/>
+                android:id="@+id/txtGlobalRecovered"/>
 
         </LinearLayout>
 

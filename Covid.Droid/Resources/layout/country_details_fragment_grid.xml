@@ -17,7 +17,7 @@
         android:layout_height="0dp">
 
         <ImageButton
-            android:contentDescription="Volver"
+            android:contentDescription="@string/go_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -79,7 +79,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:tag="0,0"
-            android:contentDescription="Cantidad de casos."
+            android:contentDescription="@string/cases_description"
             android:id="@+id/cardCountryCount"
             app:cardCornerRadius="8dp">
 
@@ -128,7 +128,7 @@
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
             android:tag="0,1"
-            android:contentDescription="Cantidad de muertos."
+            android:contentDescription="@string/deaths_description"
             android:id="@+id/cardDeathCases"
             app:cardCornerRadius="8dp">
 
@@ -177,7 +177,7 @@
             android:clickable="true"
             app:cardElevation="8dp"
             android:tag="1,0"
-            android:contentDescription="Anunciados hoy."
+            android:contentDescription="@string/announced_today"
             android:id="@+id/cardTodayCases"
             app:cardCornerRadius="8dp">
 
@@ -223,7 +223,7 @@
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
             android:tag="1,1"
-            android:contentDescription="Fallecidos hoy."
+            android:contentDescription="@string/today_deaths"
             android:id="@+id/cardTodayDeaths"
             app:cardCornerRadius="8dp">
 
@@ -272,7 +272,7 @@
             app:cardElevation="8dp"
             android:tag="2,0"
             android:id="@+id/cardCriticalCases"
-            android:contentDescription="Casos críticos."
+            android:contentDescription="@string/critical_cases"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -318,7 +318,7 @@
             app:cardElevation="8dp"
             android:tag="2,1"
             android:id="@+id/cardActiveCases"
-            android:contentDescription="Casos activos."
+            android:contentDescription="@string/active_cases"
             app:cardCornerRadius="8dp">
 
             <LinearLayout
@@ -361,7 +361,7 @@
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
             android:tag="3,0"
-            android:contentDescription="Recuperados."
+            android:contentDescription="@string/title_recovered"
             android:id="@+id/cardRecoveredCases"
             app:cardCornerRadius="8dp">
 
@@ -407,7 +407,7 @@
             android:layout_marginRight="16dp"
             app:cardElevation="8dp"
             android:tag="3,1"
-            android:contentDescription="Tasa de muerte."
+            android:contentDescription="@string/death_rate"
             android:id="@+id/cardDeathRate"
             app:cardCornerRadius="8dp">
 

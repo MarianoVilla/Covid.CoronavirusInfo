@@ -102,7 +102,7 @@ namespace Covid.Droid.Fragments
             this.Report.LoadTimeseries();
             if (this.Report.Timeseries is null)
             {
-                Toast.MakeText(Btn.Context, "Información no disponible.", ToastLength.Short).Show();
+                Toast.MakeText(Btn.Context, Resources.GetString(Resource.String.unavailable_info), ToastLength.Short).Show();
                 return;
             }
             GoToCharts();

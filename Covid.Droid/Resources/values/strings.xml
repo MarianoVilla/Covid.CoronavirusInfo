@@ -1,12 +1,29 @@
 <resources>
     <string name="app_name">CoronAppVirus - COVID-19</string>
-    <string name="title_home">Mundial</string>
-    <string name="title_dashboard">Países</string>
+    <string name="title_global">Global</string>
+    <string name="title_countries">Países</string>
     <string name="title_about">Acerca de CoronAppVirus</string>
   <string name="title_info">Info</string>
     <string name="title_infected">Casos</string>
   <string name="title_deaths">Muertos</string>
   <string name="title_recovered">Recuperados</string>
+  <string name="search_hint">Buscar</string>
+  <string name="progressions">Progresión para</string>
+  <string name="show_last">Mostrar últimos</string>
+  <string name="days_in"> días en </string>
+  <string name="cases_description">Cantidad de casos.</string>
+  <string name="deaths_description">Cantidad de muertos.</string>
+  <string name="announced_today">Anunciados hoy.</string>
+  <string name="today_deaths">Fallecidos hoy.</string>
+  <string name="critical_cases">Casos críticos.</string>
+  <string name="active_cases">Casos activos.</string>
+  <string name="death_rate">Tasa de muerte.</string>
+  <string name="go_back">Volver</string>
+  <string-array name="chart_types">
+    <item>Líneas</item>
+    <item>Barras</item>
+    <item>Puntos</item>
+  </string-array>
   <string name="info_title">COVID-19</string>
   <string name="whats_coronavirus_title" formatted="false" >¿Qué es un coronavirus?</string>
   <string name="whats_coronavirus" formatted="false" >Los coronavirus son una extensa familia de virus que pueden causar enfermedades tanto en animales como en humanos. En los humanos, se sabe que varios coronavirus causan infecciones respiratorias que pueden ir desde el resfriado común hasta enfermedades más graves como el síndrome respiratorio de Oriente Medio (MERS) y el síndrome respiratorio agudo severo (SRAS). El coronavirus que se ha descubierto más recientemente causa la enfermedad por coronavirus COVID-19.</string>
@@ -19,4 +36,10 @@
   <string name="source_oms" formatted="false">Fuente: https://www.who.int/es/emergencies/diseases/novel-coronavirus-2019/advice-for-public/q-a-coronaviruses </string>
   <string name="dependencies_credit_title" formatted="false">Coronavirus App depende de las siguientes APIs/librerías:</string>
   <string name="novel_credit" formatted="false">NovelCOVID: https://github.com/NovelCOVID/API </string>
+
+
+  <string name="update_error">Hubo un error al actualizar. Usamos la info de la última actualización.</string>
+  <string name="impossible_to_start">Imposible iniciar, vuelva a intentar.</string>
+  <string name="unavailable_info">Información no disponible.</string>
+
 </resources>

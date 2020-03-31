@@ -335,7 +335,7 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (this.GlobalFragment.IsVisible)
                 return;
-            ShowMainTitle("Global");
+            ShowMainTitle(Resources.GetString(Resource.String.title_global));
             SetTitleDrawable(Resource.Drawable.world_earth);
             this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.GlobalFragment).Commit();
         }
@@ -350,7 +350,7 @@ namespace Covid.Droid.Activities
         void ShowByCountries()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            ShowMainTitle("Países");
+            ShowMainTitle(Resources.GetString(Resource.String.title_countries));
             SetTitleDrawable(Resource.Drawable.country_icon);
             this.recyclerLayout.Animate().SetDuration(300).Alpha(1);
             this.recyclerLayout.Visibility = ViewStates.Visible;

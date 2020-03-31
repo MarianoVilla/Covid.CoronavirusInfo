@@ -54,7 +54,6 @@ namespace Covid.Lib
                     var Report = await content.ReadAsAsync<IEnumerable<CovidCountryReport>>();
                     Report.LoadRegionalFriendlyNames();
                     Report.LoadCountryCodes();
-                    //Report.LoadTimeseries();
                     NotifySuccess(Report);
                 }
                 else

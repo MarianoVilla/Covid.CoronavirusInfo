@@ -8,6 +8,6 @@ namespace Covid.Model
     public class CountryEquivalences
     {
         public Dictionary<string, string> NamesCodes { get; set; }
-        public Dictionary<string,string> NamesEnEs { get; set; }
+        public Dictionary<string,string> NamesEnToLocale { get; set; }
     }
 }

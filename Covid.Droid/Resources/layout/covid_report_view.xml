@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardElevation="4dp"
@@ -21,8 +19,7 @@
                 android:textSize="30sp"
                 android:drawableRight="@drawable/star_empty"
                 android:id="@+id/txtCountryName"
-                android:textAlignment="center"
-                android:text="Bla"/>
+                android:textAlignment="center"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -30,9 +27,7 @@
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 android:textSize="40sp"
-                android:id="@+id/txtCountryCount"
-                android:text="1000"/>
+                android:id="@+id/txtCountryCount"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>
-</FrameLayout>

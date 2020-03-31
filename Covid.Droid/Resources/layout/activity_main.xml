@@ -20,7 +20,7 @@
         android:layout_marginTop="6dp"
         android:textAlignment="center"
         app:autoSizeTextType="uniform"
-        android:text="@string/title_home"
+        android:text="@string/title_global"
         android:background="#10FFFFFF"
         android:drawableBottom="@drawable/world_earth"/>
 
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/editextrounded"
             android:id="@+id/txtSearchCountry"
-            android:hint="Buscar"
+            android:hint="@string/abc_search_hint"
             android:inputType="text"
             android:textAlignment="center"
             android:imeOptions="actionSearch"/>
