@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">CoronAppvirus - COVID-19</string>
+    <string name="title_home">Global</string>
+    <string name="title_dashboard">Countries</string>
+    <string name="title_about">About CoronAppVirus</string>
+  <string name="title_info">Info</string>
+    <string name="title_infected">Cases</string>
+  <string name="title_deaths">Casualties</string>
+  <string name="title_recovered">Recovered</string>
+  <string name="info_title">COVID-19</string>
+  <string name="whats_coronavirus_title" formatted="false" >What is a coronavirus</string>
+  <string name="whats_coronavirus" formatted="false" >Coronaviruses are a large family of viruses mwhich may cause illness in animals or humans. In humans, several coronaviruses are known to cause respiratory infections ranging from the common cold to more severe diseases such as Middle East Respiratory Syndrome (MERS) and Severe Acute Respiratory Syndrome (SARS). The most recently discovered coronavirus causes coronavirus disease COVID-19.</string>
+  <string name="whats_covid19_title" formatted="false" >What is COVID-19?</string>
+  <string name="whats_covid19" formatted="false" >COVID-19 is the infectious disease caused by the most recently discovered coronavirus. This new virus and disease were unknown before the outbreak began in Wuhan, China, in December 2019.</string>
+  <string name="covid_symptoms_title" formatted="false" >What are the symptoms of COVID-19?</string>
+  <string name="covid_symptoms" formatted="false">The most common symptoms of COVID-19 are fever, tiredness, and dry cough. Some patients may have aches and pains, nasal congestion, runny nose, sore throat or diarrhea. These symptoms are usually mild and begin gradually. Some people become infected but don’t develop any symptoms and don't feel unwell. Most people (about 80%) recover from the disease without needing special treatment. Around 1 out of every 6 people who gets COVID-19 becomes seriously ill and develops difficulty breathing. Older people, and those with underlying medical problems like high blood pressure, heart problems or diabetes, are more likely to develop serious illness. People with fever, cough and difficulty breathing should seek medical attention.</string>
+  <string name="covid_propagation_title" formatted="false">How does COVID-19 spread?</string>
+  <string name="covid_propagation" formatted="false">People can catch COVID-19 from others who have the virus. The disease can spread from person to person through small droplets from the nose or mouth which are spread when a person with COVID-19 coughs or exhales. These droplets land on objects and surfaces around the person. Other people then catch COVID-19 by touching these objects or surfaces, then touching their eyes, nose or mouth. People can also catch COVID-19 if they breathe in droplets from a person with COVID-19 who coughs out or exhales droplets. This is why it is important to stay more than 1 meter (3 feet) away from a person who is sick.</string>
+  <string name="source_oms" formatted="false">Source: https://www.who.int/es/emergencies/diseases/novel-coronavirus-2019/advice-for-public/q-a-coronaviruses </string>
+  <string name="dependencies_credit_title" formatted="false">CoronAppVirus depends on the following APIs/libraries:</string>
+  <string name="novel_credit" formatted="false">NovelCOVID: https://github.com/NovelCOVID/API </string>
+</resources>

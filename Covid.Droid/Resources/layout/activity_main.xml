@@ -20,7 +20,7 @@
         android:layout_marginTop="6dp"
         android:textAlignment="center"
         app:autoSizeTextType="uniform"
-        android:text="Global"
+        android:text="@string/title_home"
         android:background="#10FFFFFF"
         android:drawableBottom="@drawable/world_earth"/>
 

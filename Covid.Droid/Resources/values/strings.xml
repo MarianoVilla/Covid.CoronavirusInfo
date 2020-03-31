@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">CoronAppvirus - Coronavirus stats</string>
+    <string name="app_name">CoronAppVirus - COVID-19</string>
     <string name="title_home">Mundial</string>
     <string name="title_dashboard">Países</string>
-    <string name="title_about">Acerca de Coronavirus App</string>
+    <string name="title_about">Acerca de CoronAppVirus</string>
   <string name="title_info">Info</string>
     <string name="title_infected">Casos</string>
   <string name="title_deaths">Muertos</string>

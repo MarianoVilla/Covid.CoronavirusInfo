@@ -34,6 +34,30 @@ namespace Covid.Test
             Assert.False(Dict.TryGetValueMultiKey(out TheValue, null));
             Assert.False(Dict.TryGetValueMultiKey(out TheValue, "AKey", "AnotherKey", null));
         }
+        [Test]
+        public void ObjectToJson_ShouldWork()
+        {
+            Assert.AreEqual("{}", new { }.ToJson());
+
+            var OnePropActual = new { StringProp = "SomeValue" }.ToJson();
+            Assert.AreEqual(@"{""StringProp"":""SomeValue""}", OnePropActual);
+
+            var TwoPropsActual = new { StringProp = "SomeValue", IntProp = 1  }.ToJson();
+            Assert.AreEqual(@"{""StringProp"":""SomeValue"",""IntProp"":1}", TwoPropsActual);
+
+            var NestedObjectActual = new { StringProp = "SomeValue", IntProp = 1, NestedObject = new { NestedString = "NestedValue" } }.ToJson();
+            Assert.AreEqual(@"{""StringProp"":""SomeValue"",""IntProp"":1,""NestedObject"":{""NestedString"":""NestedValue""}}", NestedObjectActual);
+
+            object Null = null;
+            Assert.AreEqual("null", Null.ToJson());
+
+        }
+        [Test]
+        public void StringFromJson_ShouldWork()
+        {
+            var EmptyObject = new { };
+            Assert.AreEqual("{}".FromJson<dynamic>(), EmptyObject);
+        }
 
     }
 }
