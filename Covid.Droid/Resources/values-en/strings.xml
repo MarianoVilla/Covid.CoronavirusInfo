@@ -15,7 +15,7 @@
   <string name="deaths_description">Casualties count</string>
   <string name="announced_today">Announced today</string>
   <string name="today_deaths">Today\'s casualties</string>
-  <string name="critical_cases">Crotocañ cases</string>
+  <string name="critical_cases">Critical cases</string>
   <string name="active_cases">Active cases</string>
   <string name="death_rate">Death rate</string>
   <string name="go_back">Go back</string>
