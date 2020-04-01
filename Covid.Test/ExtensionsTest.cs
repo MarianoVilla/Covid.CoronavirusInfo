@@ -56,6 +56,7 @@ namespace Covid.Test
         public void StringFromJson_ShouldWork()
         {
             Assert.AreEqual("", "{}".FromJson<object>());
+           
         }
 
     }
