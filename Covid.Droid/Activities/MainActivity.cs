@@ -28,7 +28,7 @@ using static Com.Tomergoldst.Tooltips.ToolTipsManager;
 namespace Covid.Droid.Activities
 {
 
-    [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme.Dark", MainLauncher = false)]
+    [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme", MainLauncher = false)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener, ITipListener
     {
         GlobalDataFragment GlobalFragment;
@@ -38,7 +38,8 @@ namespace Covid.Droid.Activities
         TextView txtTitle;
         LinearLayout recyclerLayout;
         CountryDetailsFragment DetailsFragment;
-        InfoFragment InfoFrag;
+        InfoFragment InfoFragment;
+        PreferencesFragment PrefFragment;
         CovidReport GlobalReport;
         List<CovidCountryReport> CountriesReport;
         ViewGroup RootView;
@@ -107,6 +108,7 @@ namespace Covid.Droid.Activities
             this.RootView = FindViewById<ViewGroup>(Resource.Id.container);
             this.txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
             this.GlobalFragment = (GlobalDataFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
+            this.PrefFragment = (PreferencesFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.preferencesFragment);
 
             InitNavigation();
             InitRecyclerView();
@@ -126,7 +128,7 @@ namespace Covid.Droid.Activities
         private void InitInfoFragment()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            this.InfoFrag = (InfoFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.infoFragment);
+            this.InfoFragment = (InfoFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.infoFragment);
             HideInfo();
         }
 
@@ -261,12 +263,33 @@ namespace Covid.Droid.Activities
                 case Resource.Id.navigation_info:
                     SwitchToInfo();
                     return true;
+                case Resource.Id.navigation_preferences:
+                    SwitchToPreferences();
+                    return true;
                     //case Resource.Id.navigation_about:
                     //    SwitchToAbout();
                     //    return true;
             }
             return false;
         }
+
+        void SwitchToPreferences()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            HideInfo();
+            HideGlobal();
+            HideDetails();
+            ShowPreferences();
+        }
+        void ShowPreferences()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            ShowMainTitle(Resources.GetString(Resource.String.title_preferences));
+            SetTitleDrawable(Resource.Drawable.configuration_32);
+            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.PrefFragment).Commit();
+        }
+
         void SwitchToGlobal()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
@@ -294,21 +317,21 @@ namespace Covid.Droid.Activities
         void HideInfo()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            if (this.InfoFrag.IsHidden)
+            if (this.InfoFragment.IsHidden)
                 return;
             Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.InfoFrag).Commit();
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.InfoFragment).Commit();
             ShowMainTitle();
         }
         void ShowInfo()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            if (this.InfoFrag.IsVisible)
+            if (this.InfoFragment.IsVisible)
                 return;
             HideMainTitle();
             SetTitleDrawable(Resource.Drawable.exclamation);
             Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.InfoFrag).Commit();
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.InfoFragment).Commit();
         }
         void HideMainTitle()
         {

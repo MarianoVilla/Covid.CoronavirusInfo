@@ -15,7 +15,10 @@
         android:id="@+id/navigation_info"
         android:icon="@drawable/exclamation"
         android:title="@string/title_info" />
-
+  <item
+android:id="@+id/navigation_preferences"
+android:icon="@drawable/configuration_32"
+android:title="@string/title_preferences" />
 
 
 </menu>

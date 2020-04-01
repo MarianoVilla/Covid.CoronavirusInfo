@@ -7,6 +7,9 @@
     <string name="title_infected">Casos</string>
   <string name="title_deaths">Muertos</string>
   <string name="title_recovered">Recuperados</string>
+  <string name="title_preferences">Peferencias</string>
+  <string name="pref_title_theme">Dark theme</string>
+  <string name="pref_summary_theme">Enter night!</string>
   <string name="search_hint">Buscar</string>
   <string name="progressions">Progresión para</string>
   <string name="show_last">Mostrar últimos</string>

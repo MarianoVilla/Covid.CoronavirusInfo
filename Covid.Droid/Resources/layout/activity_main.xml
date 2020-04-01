@@ -26,7 +26,13 @@
 
 
 
-
+        <fragment
+        android:id="@+id/preferencesFragment"
+        android:layout_below="@id/txtTitle"
+        android:layout_above="@id/navigation"
+        class="Covid.Droid.Fragments.PreferencesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"    />
 
     <fragment
         android:id="@+id/globalDataFragment"
@@ -104,7 +110,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:layout_alignParentBottom="true"
-        android:backgroundTint="@android:color/darker_gray"
         app:menu="@menu/navigation" />
 
 </RelativeLayout>

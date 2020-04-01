@@ -177,6 +177,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.GridLayout">
       <Version>28.0.0.3</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v7.Preference">
+      <Version>28.0.0.3</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.VersionedParcelable">
       <Version>28.0.0.3</Version>
     </PackageReference>
@@ -1178,6 +1181,10 @@
     <AndroidResource Include="Resources\drawable\distance_alt.png" />
     <AndroidResource Include="Resources\drawable\wash_hands_water_alt.png" />
     <AndroidResource Include="Resources\drawable\soap.png" />
+    <AndroidResource Include="Resources\layout\preferences.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\configuration_32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
