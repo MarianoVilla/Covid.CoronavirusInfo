@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.Runtime;
-using Android.Support.V4.OS;
 using Covid.Lib;
 using Covid.Model;
 using System;

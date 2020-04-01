@@ -82,6 +82,7 @@
     <Compile Include="Fragments\CountryDetailsFragment.cs" />
     <Compile Include="Fragments\GlobalDataFragment.cs" />
     <Compile Include="Fragments\InfoFragment.cs" />
+    <Compile Include="Fragments\PreferencesFragment.cs" />
     <Compile Include="Helpers\AnimationHandler.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Helpers\DebugHelper.cs" />

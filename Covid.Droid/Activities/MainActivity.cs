@@ -28,7 +28,7 @@ using static Com.Tomergoldst.Tooltips.ToolTipsManager;
 namespace Covid.Droid.Activities
 {
 
-    [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme", MainLauncher = false)]
+    [Activity(Label = "@string/app_name", Icon = "@mipmap/ic_launcher_foreground", Theme = "@style/AppTheme.Dark", MainLauncher = false)]
     public class MainActivity : AppCompatActivity, BottomNavigationView.IOnNavigationItemSelectedListener, ITipListener
     {
         GlobalDataFragment GlobalFragment;
