@@ -55,8 +55,7 @@ namespace Covid.Test
         [Test]
         public void StringFromJson_ShouldWork()
         {
-            var EmptyObject = new { };
-            Assert.AreEqual("{}".FromJson<dynamic>(), EmptyObject);
+            Assert.AreEqual("", "{}".FromJson<object>());
         }
 
     }
