@@ -8,8 +8,8 @@
   <string name="title_deaths">Casualties</string>
   <string name="title_recovered">Recovered</string>
   <string name="title_preferences">Peferences</string>
-  <string name="pref_title_theme">Tema oscuro</string>
-  <string name="pref_summary_theme">Utilizar tema oscuro</string>
+  <string name="pref_title_theme">Dark theme</string>
+  <string name="pref_summary_theme">Enter night, exit light!</string>
   <string name="search_hint">Search</string>
   <string name="progressions">Progression for</string>
   <string name="show_last">Display last</string>

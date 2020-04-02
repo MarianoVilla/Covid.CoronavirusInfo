@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <android.support.v7.preference.PreferenceCategory>
         <android.support.v7.preference.SwitchPreferenceCompat
-            android:key="pref_theme"
+            android:key="prefTheme"
+            android:id="@+id/switchDarkTheme"
             android:title="@string/pref_title_theme"
             android:summary="@string/pref_summary_theme"
             android:defaultValue="false" />

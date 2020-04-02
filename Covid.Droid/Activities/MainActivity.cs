@@ -51,6 +51,10 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             Log.Debug(this.Tag, "google app id: " + GetString(Resource.String.google_app_id));
             base.OnCreate(savedInstanceState);
+            if (SharedPreferencesHandler.ShouldUseDarkTheme(this))
+            {
+                SetTheme(Resource.Style.AppTheme_Dark);
+            }
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
@@ -108,11 +112,11 @@ namespace Covid.Droid.Activities
             this.RootView = FindViewById<ViewGroup>(Resource.Id.container);
             this.txtTitle = FindViewById<TextView>(Resource.Id.txtTitle);
             this.GlobalFragment = (GlobalDataFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.globalDataFragment);
-            this.PrefFragment = (PreferencesFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.preferencesFragment);
 
             InitNavigation();
             InitRecyclerView();
             InitInfoFragment();
+            InitPrefFragment();
             InitDetailsFragment();
             InitTxtSearchCountries();
             InitFab();
@@ -123,6 +127,12 @@ namespace Covid.Droid.Activities
         {
             this.btnBackToTop = FindViewById<FloatingActionButton>(Resource.Id.fabBackToTop);
             this.btnBackToTop.Click += (s, e) => this.mRecyclerView.SmoothScrollToPosition(0);
+        }
+        void InitPrefFragment()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            this.PrefFragment = (PreferencesFragment)this.SupportFragmentManager.FindFragmentById(Resource.Id.preferencesFragment);
+            HidePreferences();
         }
 
         private void InitInfoFragment()
@@ -272,29 +282,21 @@ namespace Covid.Droid.Activities
             }
             return false;
         }
-
         void SwitchToPreferences()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideInfo();
             HideGlobal();
             HideDetails();
+            HideByCountries();
             ShowPreferences();
         }
-        void ShowPreferences()
-        {
-            DebugHelper.Method(MethodBase.GetCurrentMethod());
-            ShowMainTitle(Resources.GetString(Resource.String.title_preferences));
-            SetTitleDrawable(Resource.Drawable.configuration_32);
-            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.PrefFragment).Commit();
-        }
-
         void SwitchToGlobal()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideInfo();
             HideByCountries();
+            HidePreferences();
             ShowGlobal();
         }
         void SwitchToCountries()
@@ -303,6 +305,7 @@ namespace Covid.Droid.Activities
             HideInfo();
             HideGlobal();
             HideDetails();
+            HidePreferences();
             ShowByCountries();
         }
         void SwitchToInfo()
@@ -310,17 +313,34 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             HideGlobal();
             HideByCountries();
+            HidePreferences();
             HideDetails();
             ShowInfo();
         }
         private void SwitchToAbout() => throw new NotImplementedException();
+
+        void HidePreferences()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            if (this.PrefFragment.IsHidden)
+                return;
+            HideFragment(this.PrefFragment);
+            ShowMainTitle();
+        }
+        void ShowPreferences()
+        {
+            DebugHelper.Method(MethodBase.GetCurrentMethod());
+            ShowMainTitle(Resources.GetString(Resource.String.title_preferences));
+            SetTitleDrawable(Resource.Drawable.configuration_32);
+            ShowFragment(this.PrefFragment);
+        }
         void HideInfo()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (this.InfoFragment.IsHidden)
                 return;
             Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.InfoFragment).Commit();
+            HideFragment(this.InfoFragment);
             ShowMainTitle();
         }
         void ShowInfo()
@@ -330,8 +350,7 @@ namespace Covid.Droid.Activities
                 return;
             HideMainTitle();
             SetTitleDrawable(Resource.Drawable.exclamation);
-            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
-            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.InfoFragment).Commit();
+            ShowFragment(this.InfoFragment);
         }
         void HideMainTitle()
         {
@@ -351,7 +370,7 @@ namespace Covid.Droid.Activities
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (this.GlobalFragment.IsHidden)
                 return;
-            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.GlobalFragment).Commit();
+            HideFragment(this.GlobalFragment);
         }
         void ShowGlobal()
         {
@@ -360,7 +379,7 @@ namespace Covid.Droid.Activities
                 return;
             ShowMainTitle(Resources.GetString(Resource.String.title_global));
             SetTitleDrawable(Resource.Drawable.world_earth);
-            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.GlobalFragment).Commit();
+            ShowFragment(this.GlobalFragment);
         }
         void HideByCountries()
         {
@@ -388,14 +407,24 @@ namespace Covid.Droid.Activities
         private void ShowDetails()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
-            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show(this.DetailsFragment).CommitAllowingStateLoss();
+            ShowFragment(this.DetailsFragment);
         }
         private void HideDetails()
         {
             DebugHelper.Method(MethodBase.GetCurrentMethod());
             if (this.DetailsFragment.IsHidden)
                 return;
-            this.SupportFragmentManager.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide(this.DetailsFragment).CommitAllowingStateLoss();
+            HideFragment(this.DetailsFragment);
+        }
+        void ShowFragment(object fragment)
+        {
+            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Show((Android.Support.V4.App.Fragment)fragment).Commit();
+        }
+        void HideFragment(object fragment)
+        {
+            Android.Support.V4.App.FragmentManager fm = this.SupportFragmentManager;
+            fm.BeginTransaction().SetCustomAnimations(Resource.Animation.anim_fade_in, Resource.Animation.anim_fade_out).Hide((Android.Support.V4.App.Fragment)fragment).Commit();
         }
         public void OnTipDismissed(View p0, int p1, bool p2) => DebugHelper.Method(MethodBase.GetCurrentMethod());//@ToDo implement.
     }

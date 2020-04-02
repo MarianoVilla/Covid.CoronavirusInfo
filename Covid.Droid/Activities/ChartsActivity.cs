@@ -15,6 +15,7 @@ using Microcharts.Droid;
 using SkiaSharp;
 using Covid.Lib;
 using Covid.Droid.Model;
+using Covid.Droid.Helpers;
 
 namespace Covid.Droid.Activities
 {
@@ -31,6 +32,10 @@ namespace Covid.Droid.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            if (SharedPreferencesHandler.ShouldUseDarkTheme(this))
+            {
+                SetTheme(Resource.Style.AppTheme_Dark);
+            }
             SetContentView(Resource.Layout.charts_view);
             this.Report = Intent.GetStringExtra(nameof(Report)).FromJson<CovidCountryReport>();
             ChartTypesArray = Resources.GetStringArray(Resource.Array.chart_types);
